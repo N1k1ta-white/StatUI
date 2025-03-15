@@ -7,3 +7,4 @@ __pycache__/
 /.idea/vcs.xml
 /frontend/public/vite.svg
 /.idea/workspace.xml
+/.vscode/
