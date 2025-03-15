@@ -1,5 +1,6 @@
 from flask import Flask, request
 from dotenv import load_dotenv
+from flask_cors import CORS, cross_origin
 from werkzeug.datastructures import FileStorage
 
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics, clustering
@@ -8,8 +9,15 @@ load_dotenv()
 
 app = Flask(__name__)
 
-@app.route("/descriptive", methods=["POST"])
+CORS(
+    app
+)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
+    print(request.files)
     file: FileStorage = request.files["file"]
     statistics = getDescriptiveStatistics(file)
     return statistics

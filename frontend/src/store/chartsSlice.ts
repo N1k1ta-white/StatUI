@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {chartInterfaceClusteringResponse,  chartReduxInterface, descriptiveResponse} from "@/type/chart.ts";
-import fetchData from "@/lib/fetch";
+import {chartInterfaceClusteringResponse, chartReduxInterface, descriptiveResponse} from "@/type/chart.ts";
+import {fetchFormDataAuth} from "@/lib/fetch";
 import {defaultClusteringMockdata, defaultDescriptiveMockdata} from "@/lib/utils.ts";
 
 interface State {
@@ -31,19 +31,13 @@ export const fetchUploadContext = createAsyncThunk<descriptiveResponse, {
         try {
             const formData = new FormData();
             formData.append('file', contextData.file!);
-            formData.append('inputValues', JSON.stringify(contextData.inputValues));
-            formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/api/uploadcontext`;
-            const response = await fetch(query, {
+            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
+            // formData.append('notes', contextData.notes);
+            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/api/descriptive`;
+            return await fetchFormDataAuth<descriptiveResponse>(query, {
                 method: 'POST',
-                body: formData,
-                credentials: "include"
+                body: formData
             });
-            if (!response.ok) {
-                const errorResponse = await response.json().catch(() => null);
-                throw new Error(errorResponse?.message || 'Неизвестная ошибка');
-            }
-            return await response.json();
         } catch (error) {
             throw new Error((error as Error).message);
         }

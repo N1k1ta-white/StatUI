@@ -18,13 +18,14 @@ export class FileService {
 
     async saveFile(fileData: Express.Multer.File): Promise<{ file: FileEntity, originalName: string }> {
         const uniqueName = fileData.filename;
+        console.log('File saved:', uniqueName);
         const file = new FileEntity();
         file.fileName = uniqueName;
         file.originalName = fileData.originalname;
         file.mimeType = fileData.mimetype;
         file.size = fileData.size;
 
-        this.typeExtractorService.extractCsvTypes(file.fileName);   
+        this.typeExtractorService.extractCsvTypes(this.getPath(file.fileName));   
 
         const savedFile = await this.fileRepository.save(file);
         return { file: savedFile, originalName: fileData.originalname };

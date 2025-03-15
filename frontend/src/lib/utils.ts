@@ -10,13 +10,6 @@ export const defaultDescriptiveMockdata: descriptiveResponse = {
   Account_Age: [
     {
       "25%": 30.0,
-      "50%": 60.0,
-      "75%": 90.0,
-      count: 51000.0,
-      max: 119.0,
-      mean: 60.033902,
-      min: 1.0,
-      std: 34.384131,
     },
   ],
   Fraudulent: [

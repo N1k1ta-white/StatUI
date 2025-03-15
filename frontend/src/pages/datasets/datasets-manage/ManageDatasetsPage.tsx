@@ -24,7 +24,8 @@ function ManageDatasetsPage() {
     const sendData = async () => {
         try {
             await store.dispatch(fetchUploadContext({file, inputValues, notes}))
-            navigate("/datasets/visualisation");
+            console.log("Successfully uploaded data")
+            // navigate("/datasets/visualisation");
         } catch (error) {
             alert(error);
         }

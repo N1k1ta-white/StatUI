@@ -8,7 +8,7 @@ export class FileUploadInterceptor {
   static getInterceptor() {
     return FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: process.env.FILE_STORAGE_PATH,
         filename: (req, file, callback) => {
             const fileExt = file.originalname.split('.').pop();
             const uniqueName = `${Date.now()}-${uuidv4()}.${fileExt}`;
