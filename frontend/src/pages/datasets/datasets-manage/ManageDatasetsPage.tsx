@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import store from "@/store/store.ts";
-import {fetchUploadContext} from "@/store/chartsSlice.ts";
+import {fetchUploadContext} from "@/store/statisticsSlice.ts";
 import {useNavigate} from "react-router-dom";
 
 
@@ -24,9 +24,9 @@ function ManageDatasetsPage() {
     const sendData = async () => {
         try {
             await store.dispatch(fetchUploadContext({file, inputValues, notes}))
-            // navigate("/datasets/visualisation");
+            navigate("/datasets/visualisation");
         } catch (error) {
-            alert(error);
+            console.log(error)
         }
     }
 
@@ -52,7 +52,7 @@ function ManageDatasetsPage() {
                                 ))}
                             </ul>
                         </Card>
-                        <Button onClick={sendData}>Send data</Button>
+                        <Button className="cursor-pointer" onClick={sendData}>Send data</Button>
                     </div>
                 </div>
          </div>
