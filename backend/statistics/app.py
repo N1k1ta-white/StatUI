@@ -4,7 +4,7 @@ from flask_cors import CORS, cross_origin
 from werkzeug.datastructures import FileStorage
 
 from clustering.clustering import Clustering
-from descriptive.descriptive import getDescriptiveStatistics, getGraphics, clustering
+from descriptive.descriptive import getDescriptiveStatistics, getGraphics
 
 load_dotenv()
 

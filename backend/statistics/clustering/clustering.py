@@ -4,12 +4,9 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
-from werkzeug.datastructures import FileStorage
 
 class Clustering:
-    def kmeans(file: FileStorage):
-        df = pd.read_csv(file)
-        df = df.dropna()
+    def kmeans(df: pd.DataFrame):
         numerical_features = df.select_dtypes(include=[np.number]).columns
         numerical_data = df[numerical_features]
 
