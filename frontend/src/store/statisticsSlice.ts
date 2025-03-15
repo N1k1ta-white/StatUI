@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ChartBase, ChartInterfaceClustering, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
+import {ChartBase, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
 import {fetchFormDataAuth} from "@/lib/fetch";
 import {RootState} from "@/store/store.ts";
 
@@ -9,7 +9,6 @@ export interface State {
     statistics: StatisticsStore;
     error: string | null;
 }
-
 
 const initialState: State = {
     file: null,
@@ -73,6 +72,7 @@ export const fetchUploadCluster = createAsyncThunk<
 
 
 
+
 const statisticsSlice = createSlice({
     name: 'statisticsSlice',
     initialState,
@@ -101,7 +101,6 @@ const statisticsSlice = createSlice({
             state.loading = false;
             state.error = action.error.message || "Неизвестна грешка";
         })
-
         .addCase(fetchUploadCluster.pending,(state)=> {
             state.loading = true;
             state.error = null;
