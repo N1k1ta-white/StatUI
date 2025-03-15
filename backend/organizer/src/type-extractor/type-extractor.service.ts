@@ -33,7 +33,7 @@ export class TypeExtractorService {
                 const uniqueValues = Array.from(values);
                 const detectedType = this.detectType(uniqueValues);
     
-                inferredTypes[key] = { name: key, type: detectedType }; // Store directly in object
+                inferredTypes[key] = { type: detectedType }; // Store directly in object
 
                 // If it's a categorical variable (factor), add factor values
                 if (detectedType === 'factor') {

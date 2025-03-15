@@ -7,10 +7,11 @@ import { FileService } from './file.service';
 
 
 export interface AnalysisMethod {
-    models: string,
+    method: string,
     attributes_analysis: string[],
     expected_results: string[]
 }
+
 @Injectable()
 export class AiSuggestionService {
 
@@ -22,8 +23,10 @@ export class AiSuggestionService {
     async suggestAnalysisMethods(@Body() fileId: string, notes: string ): Promise<AnalysisMethod[]> {
         // TODO: Save extracted types to database 
         const extractedTypes = await this.fileService.extractTypes(fileId);
+        console.log('Extracted types:', extractedTypes);
 
         const prompt = createPrompt(notes, extractedTypes);
+
         let methods: AnalysisMethod[] = [];
         const maxAttempts = 3;
         let attempt = 0;
