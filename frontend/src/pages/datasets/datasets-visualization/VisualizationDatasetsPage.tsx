@@ -1,12 +1,7 @@
 import {BubblePlot, DensityScatterPlot, FunnelPlot, GroupedBarPlot, Heatmap, ScatterPlot, StackedBarPlot, StandardBarPlot, StandardHistogramPlot, StandardPiePlot, ViolinPlot, Scatter3DPlot} from "@/components/charts/Chart.tsx";
-import { useEffect } from "react";
 
 
 function VisualizationDatasetsPage() {
-    
-    const graphData = 
-    useEffect(() => {
-    }, [graphData])
      return (
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">VisualizationDatasetsPage</h1>
