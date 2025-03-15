@@ -35,7 +35,7 @@ def createClusters():
     clusters = clustering.kmeans(file)
     return {
         "data": clusters,
-        "type": "scatter",
+        "type": "cluster",
         "name": "Plot of the clusters",
         "description": "The dimensionality of the data has been reduced to 2D using PCA. The clusters are visualized in this plot."
     }

@@ -1,26 +1,41 @@
 import {BubblePlot, DensityScatterPlot, FunnelPlot, GroupedBarPlot, Heatmap, ScatterPlot, StackedBarPlot, StandardBarPlot, StandardHistogramPlot, StandardPiePlot, ViolinPlot, Scatter3DPlot} from "@/components/charts/Chart.tsx";
 import DataTable from "@/components/descriptiveView/DataTable";
+import { defaultClusteringMockdata,mapClusterResponseToScatterPlotData } from "@/lib/utils";
 import { useEffect } from "react";
+import {ChartInterfaceClustering} from "@/type/chart.ts";
+import {useSelector} from "react-redux";
+import store, {RootState} from "@/store/store.ts";
+import {fetchUploadCluster} from "@/store/statisticsSlice.ts";
 
+function transformClusters({data}: ChartInterfaceClustering) {
+    return Object.values(data).map(cluster => ({
+        x: cluster.map(point => point.x),
+        y: cluster.map(point => point.y),
+        mode: 'markers'
+    }));
+}
 
 function VisualizationDatasetsPage() {
-
+    const cluster = useSelector((state: RootState) => state.chartsData.statistics.charts.find(chart => chart.type === "cluster"));
+    useEffect(() => {
+        store.dispatch(fetchUploadCluster())
+    }, []);
      return (
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">VisualizationDatasetsPage</h1>
              <DataTable/>
+             {
+                 cluster &&
+                 <ScatterPlot
+                     data={transformClusters(cluster as ChartInterfaceClustering)}
+                     xAxisLabel = "X Axis Label"
+                     yAxisLabel = "Y Axis Label"
+                     title="Scatter Plot Example"
+                 />
+             }
             <Heatmap z={[[1, 20, 30], [20, 1, 60], [30, 60, 1]]} values_x={["A", "B", "C"]} values_y={["A", "B", "C"]} title="Heatmap Example" />
             <StandardHistogramPlot x={[1, 2, 3, 4]} name="Histogram" title="Histogram Example" />
             <StandardPiePlot values={[19, 26, 55]} labels={["A", "B", "C"]} title="Pie Chart Example" />
-            <ScatterPlot
-                data={[
-                    { x: [1, 2, 3], y: [10, 15, 13], mode: "markers" },
-                    { x: [2, 3, 4], y: [16, 5, 11], mode: "lines" },
-                ]}
-                xAxisLabel = "X Axis Label"
-                yAxisLabel = "Y Axis Label"
-                title="Scatter Plot Example"
-            />
             <GroupedBarPlot
                 data={[
                     { x: ["A", "B", "C"], y: [10, 20, 30], name: "Group 1" },

@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from "@/store/authSlice";
 import chatReducer from "@/store/chatSlice";
-import chartsReducer from "@/store/chartsSlice";
+import chartsReducer from "@/store/statisticsSlice.ts";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 

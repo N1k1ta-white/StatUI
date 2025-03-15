@@ -1,61 +1,70 @@
-export interface ChartReduxInterface {
+interface DataPointNumbers {
+    x: number;
+    y: number;
+    additionals?: {[key: string]: string };
+}
+
+interface DataPointStrings {
+    x: string;
+    y: string;
+}
+
+export interface ChartBase {
     type: string;
     name: string;
     description: string;
 }
 
-interface DataPoint {
-    x: number;
-    y: number;
-    [key: string]: string | number;
-  }
+// export interface ChartInterfaceCreateGraphics extends ChartBase {
+//     data: DataPoint[];
+// }
 
-export interface ChartInterfaceCreateGraphics extends ChartReduxInterface{
-    data: DataPoint[];
-}
-
-export interface ChartInterfaceClustering extends ChartReduxInterface{
-    data:[{[key: string]: { x: number; y: number }[]}]
-}
-export interface descriptiveResponse{
-    [key: string]: {[key: string]: number};
-}
-
-  
-export interface ChartInterfaceCorrelation extends ChartReduxInterface {
+export interface ChartInterfaceClustering extends ChartBase {
     data: {
-      heatMap?: {
-        type: "heatMap";
+        [key: string]: { x: number; y: number }[]
+    }
+}
+
+export interface ChartInterfaceHeatMap extends ChartBase {
+    data: {
         methodName: string;
-        data: {
-          variablesX: string[] 
-		  variablesY: string[]
-          matrix: number[][];
-          pValues?: number[][];
-        };
-      };
-      scatterPlot?: {
-        type: "scatterPlot";
-        points: {
-          x_values: number[];
-          y_values: number[];
-        }[];
+        points: DataPointStrings[]
+        matrix: number[][];
+        pValues?: number[][];
+    };
+}
+
+export interface ChartInterfaceScatterPlot extends ChartBase {
+    data: {
+        points: DataPointNumbers[][];
         correlation: number;
         p_value: number;
-        regression?: {
-          x: number[];
-          y: number[];
-        };
-      };
+        regression?: DataPointNumbers[];
     };
-  }
+}
 
-  export interface ChartInterfaceRegression  extends ChartReduxInterface{
-    type: "scatterPlot";
-    points: { x: number; y: number }[];
-    regression?: {
-      x: number[];
-      y: number[];
+export interface ChartInterfaceCorrelation extends ChartBase {
+    data: {
+        heatMap?: ChartInterfaceHeatMap
+        scatterPlot?: ChartInterfaceScatterPlot;
     };
-  }
+}
 
+export interface ChartInterfaceRegression  extends ChartBase {
+    data: {
+        points: DataPointNumbers[];
+        regression?: DataPointNumbers[];
+    }
+}
+
+
+export interface DescriptiveStatistics {
+    [key: string]: {[key: string]: number}
+}
+
+export interface StatisticsStore {
+    fileId: string | null;
+    fileName: string | null;
+    descriptiveStatistics: DescriptiveStatistics | null,
+    charts: ChartBase[]
+}
