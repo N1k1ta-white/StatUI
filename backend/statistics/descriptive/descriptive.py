@@ -58,4 +58,7 @@ def clustering(file: FileStorage):
         row['Cluster']: row[0]
     }, axis=1).tolist()
 
-    return result[0]
+    result_dict = {}
+    for res in result:
+        result_dict.update(res)
+    return result_dict
