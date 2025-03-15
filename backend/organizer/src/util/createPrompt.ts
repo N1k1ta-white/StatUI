@@ -5,8 +5,11 @@ const maxMethods = 3;
 export function createPrompt(notes: string, scheme: Record<string, ExtractedType>) {
     return `I have a CSV file containing various attributes. For each attribute, I provide:
         ${Object.keys(scheme).map((key) => {
-        const {name, type, description = ''} = scheme[key];
-        return `- ${name} (${type})${description ? ': ' + description : ''}`;
+        const {type, factors = [], description = ''} = scheme[key];
+        const typeDetails = type === 'factor' && factors.length > 0 
+            ? ` [factor's values (do not use for as attributes) : ${factors.join(', ')}]` 
+            : '';
+        return `- ${key} (${type}${typeDetails})${description ? ': ' + description : ''}`;
         }).join('\n')}
         Notes about data: ${notes}
         Available statistical models/techniques: {Pearson's Correlation Coefficient, Spearman's Rank Correlation, Kendall's Tau, Cross-Correlation, Variance Inflation Factor, Linear Regression, Multiple Regression, Logistic Regression, Polynomial Regression, Probit & Tobit Regression, Cox Regression, Lasso Regression, K-means Clustering, Hierarchical Clustering, DBSCAN, Gaussian Mixture Models}
@@ -49,7 +52,7 @@ export function createPrompt(notes: string, scheme: Record<string, ExtractedType
         [
             {
                 "method": string,
-                "attribute_analysis": string[],
+                "attribute_analysis": {${Object.keys(scheme).map((key) => `${key}`).join(', ')}}[],
                 "expected_results": string
             },
         ...]

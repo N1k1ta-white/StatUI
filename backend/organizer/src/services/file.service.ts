@@ -18,9 +18,7 @@ export class FileService {
 
     async saveFile(fileData: Express.Multer.File): Promise<{ file: FileEntity, originalName: string }> {
         const uniqueName = fileData.filename;
-        console.log('File saved:', uniqueName);
         const file = new FileEntity();
-        console.log('File saved:', file);
         file.fileName = uniqueName;
         file.originalName = fileData.originalname;
         file.mimeType = fileData.mimetype;
