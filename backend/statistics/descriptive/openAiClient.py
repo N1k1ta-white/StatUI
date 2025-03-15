@@ -15,7 +15,6 @@ class OpenAiClient:
             messages=messages,
             stream=False
         )
-        print(response)
         content = response.choices[0].message.content
         json_string = content.replace("```json\n", "").replace("```", "").strip()
         return json.loads(json_string)

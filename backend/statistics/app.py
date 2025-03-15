@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
 from werkzeug.datastructures import FileStorage
 
+from clustering.clustering import Clustering
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics, clustering
 
 load_dotenv()
@@ -12,6 +13,8 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+clustering = Clustering()
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
@@ -29,7 +32,7 @@ def graphics():
 @app.route("/clustering", methods=["POST"])
 def createClusters():
     file: FileStorage = request.files["file"]
-    clusters = clustering(file)
+    clusters = clustering.kmeans(file)
     return {
         "data": clusters,
         "type": "scatter",
