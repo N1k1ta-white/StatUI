@@ -18,7 +18,7 @@ export interface chartInterfaceClusteringResponse extends chartReduxInterface{
     data:[{[key: string]: { x: number; y: number }[]}]
 }
 export interface descriptiveResponse{
-    [key: string]: {[key: string]: number}[];
+    [key: string]: {[key: string]: number};
 }
 
   

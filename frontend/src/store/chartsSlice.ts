@@ -33,7 +33,7 @@ export const fetchUploadContext = createAsyncThunk<descriptiveResponse, {
             formData.append('file', contextData.file!);
             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
             // formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/api/descriptive`;
+            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/descriptive`;
             return await fetchFormDataAuth<descriptiveResponse>(query, {
                 method: 'POST',
                 body: formData
@@ -66,6 +66,7 @@ const chartsSlice = createSlice({
         .addCase(fetchUploadContext.fulfilled,(state,action)=> {
             state.loading = false;
             state.error = null;
+            console.log(action.payload);
             state.descriptiveResponse = action.payload;
 
         })
