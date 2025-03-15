@@ -5,13 +5,16 @@ import { lastValueFrom } from 'rxjs';
 import { Express } from 'express';
 import { FileUploadInterceptor } from './interceptors/file.interceptor';
 import { FileService } from './services/file.service';
+import { AiSuggestionService } from './services/ai-service.service';
+import { AnalysisMethod } from './services/ai-service.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly httpService: HttpService,
-    private readonly fileService: FileService
+    private readonly fileService: FileService,
+    private readonly aiService: AiSuggestionService
   ) {}
 
   @Get()
@@ -37,5 +40,9 @@ export class AppController {
     return this.fileService.extractTypes(data.fileId);
   }
 
+  @Get('suggest')
+  async suggestAnalysisMethods(@Body() data : { fileId: string, notes: string } ): Promise<AnalysisMethod[]> {
+    return this.aiService.suggestAnalysisMethods(data.fileId, data.notes);
+  }
 }
 

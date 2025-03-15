@@ -32,6 +32,7 @@
     "class-validator": "^0.14.1",
     "csv-parser": "^3.2.0",
     "mysql2": "^3.13.0",
+    "openai": "^4.87.3",
     "organizer": "file:",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
