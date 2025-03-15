@@ -1,4 +1,4 @@
-export interface ChartReduxInterface {
+export interface chartReduxInterface {
     type: string;
     name: string;
     description: string;
@@ -10,11 +10,11 @@ interface DataPoint {
     [key: string]: string | number;
   }
 
-export interface ChartInterfaceCreateGraphics extends ChartReduxInterface{
+export interface chartInterfaceCreateGraphicsResponse extends chartReduxInterface{
     data: DataPoint[];
 }
 
-export interface ChartInterfaceClustering extends ChartReduxInterface{
+export interface chartInterfaceClusteringResponse extends chartReduxInterface{
     data:[{[key: string]: { x: number; y: number }[]}]
 }
 export interface descriptiveResponse{
@@ -22,7 +22,7 @@ export interface descriptiveResponse{
 }
 
   
-export interface ChartInterfaceCorrelation extends ChartReduxInterface {
+export interface chartInterfaceCorrelationResponse extends chartReduxInterface {
     data: {
       heatMap?: {
         type: "heatMap";
@@ -50,7 +50,7 @@ export interface ChartInterfaceCorrelation extends ChartReduxInterface {
     };
   }
 
-  export interface ChartInterfaceRegression  extends ChartReduxInterface{
+  export interface chartInterfaceRegressionResponse  extends chartReduxInterface{
     type: "scatterPlot";
     points: { x: number; y: number }[];
     regression?: {

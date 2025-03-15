@@ -1,19 +1,21 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ChartReduxInterface, descriptiveResponse} from "@/type/chart.ts";
+import {chartInterfaceClusteringResponse,  chartReduxInterface, descriptiveResponse} from "@/type/chart.ts";
 import fetchData from "@/lib/fetch";
-import {defaultDescriptiveMockdata} from "@/lib/utils.ts";
+import {defaultClusteringMockdata, defaultDescriptiveMockdata} from "@/lib/utils.ts";
 
 interface State {
     loading: boolean;
     descriptiveResponse: descriptiveResponse;
-    charts: ChartReduxInterface[];
+    chartInterfaceClusteringResponse:chartInterfaceClusteringResponse;
+    charts: chartReduxInterface[];
     error: string | null;
 }
 
 const initialState: State = {
     descriptiveResponse: defaultDescriptiveMockdata,
+    chartInterfaceClusteringResponse: defaultClusteringMockdata,
     loading: false,
-    charts: [] as ChartReduxInterface[],
+    charts: [] as chartReduxInterface[],
     error: null,
 
 }
@@ -57,7 +59,7 @@ const chartsSlice = createSlice({
         updateError: (state, action: PayloadAction<string | null>) => {
             state.error = action.payload;
         },
-        updateChartsWithChart: (state, action: PayloadAction<ChartReduxInterface>) => {
+        updateChartsWithChart: (state, action: PayloadAction<chartReduxInterface>) => {
             state.charts.push(action.payload);
         }
     },

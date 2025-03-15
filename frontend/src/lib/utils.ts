@@ -1,11 +1,11 @@
-import { descriptiveResponse } from "@/type/chart";
+import { chartInterfaceClusteringResponse, descriptiveResponse } from "@/type/chart";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
+{/*MOCK*/}
 export const defaultDescriptiveMockdata: descriptiveResponse = {
   Account_Age: [
     {
@@ -61,3 +61,42 @@ export const defaultDescriptiveMockdata: descriptiveResponse = {
     },
   ],
 };
+
+export const defaultClusteringMockdata: chartInterfaceClusteringResponse = {
+  type: "scatter",
+  name: "Sample Clustering",
+  description: "This is a mock clustering response for testing purposes.",
+  data: [
+      {
+          cluster1: [
+              { x: 1.2, y: 3.4 },
+              { x: 2.3, y: 4.5 },
+              { x: 3.1, y: 5.6 },
+          ],
+          cluster2: [
+              { x: 6.7, y: 8.9 },
+              { x: 7.8, y: 9.1 },
+              { x: 8.2, y: 10.3 },
+          ],
+          cluster3: [
+              { x: 11.4, y: 13.5 },
+              { x: 12.5, y: 14.6 },
+              { x: 13.6, y: 15.7 },
+          ],
+      },
+  ],
+};
+export function mapClusterResponseToScatterPlotData(input: chartInterfaceClusteringResponse): { x: number[]; y: number[]; mode: string }[] {
+  const output: { x: number[]; y: number[]; mode: string }[] = [];
+
+  input.data.forEach((obj) => {
+    Object.entries(obj).forEach(([_, points]) => {
+      const typedPoints = points as { x: number; y: number }[];
+      const x = typedPoints.map((point) => point.x);
+      const y = typedPoints.map((point) => point.y);
+      output.push({ x, y, mode: "markers" });
+    });
+  });
+
+  return output;
+}

@@ -20,13 +20,12 @@ export function Heatmap({ z, values_x,values_y, title }: { z: number[][]; values
 }
 
 // Histogram Component
-export function StandardHistogramPlot({ x, name, title }: { x: number[]; name: string; title: string }) {
+export function StandardHistogramPlot({ x, title }: { x: number[];  title: string }) {
     return (
         <Plot
             data={[
                 {
                     x,
-                    name,
                     type: "histogram",
                 },
             ]}
@@ -93,7 +92,7 @@ export function GroupedBarPlot({ data, title }: { data: { x: string[]; y: number
                 name: d.name,
                 type: "bar",
             }))}
-            layout={{ title: { text: title }, yaxis: { title: "Values" } }}
+            layout={{ title: { text: title }}}
         />
     );
 }
