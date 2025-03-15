@@ -7,19 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const defaultDescriptiveMockdata: descriptiveResponse = {
-  Account_Age: [
-    {
-      "25%": 30.0,
-    },
-  ],
-  Fraudulent: [
-    {
-      count: 51000.0,
-      mean: 0.049216,
-    },
-  ],
-  Number_of_Transactions_Last_24H: [
-    {
+  Account_Age: { "25%": 30.0 },
+  Fraudulent: { count: 51000.0, mean: 0.049216 },
+  Number_of_Transactions_Last_24H: {
       "25%": 4.0,
       "50%": 7.0,
       "75%": 11.0,
@@ -27,8 +17,7 @@ export const defaultDescriptiveMockdata: descriptiveResponse = {
       mean: 7.495588,
       std: 4.02008,
     },
-  ],
-  Time_of_Transaction: [
+  Time_of_Transaction:
     {
       "25%": 5.0,
       "50%": 12.0,
@@ -36,8 +25,7 @@ export const defaultDescriptiveMockdata: descriptiveResponse = {
       count: 48448.0,
       mean: 11.4884,
     },
-  ],
-  Transaction_Amount: [
+  Transaction_Amount:
     {
       "25%": 1270.5525,
       "50%": 2524.1,
@@ -47,10 +35,5 @@ export const defaultDescriptiveMockdata: descriptiveResponse = {
       min: 5.03,
       std: 5043.932555,
     },
-  ],
-  User_ID: [
-    {
-      count: 51000.0,
-    },
-  ],
+  User_ID: { count: 51000.0 }
 };
