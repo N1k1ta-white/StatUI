@@ -2,10 +2,10 @@ from flask import Flask, request
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
 from werkzeug.datastructures import FileStorage
+from pandas import DataFrame, read_csv
 
 from clustering.clustering import Clustering
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
-
 
 load_dotenv()
 
@@ -21,19 +21,22 @@ clustering = Clustering()
 def descriptiveStatistics():
     print(request.files)
     file: FileStorage = request.files["file"]
-    statistics = getDescriptiveStatistics(file)
+    df : DataFrame = read_csv(file)
+    statistics = getDescriptiveStatistics(df)
     return statistics
 
 @app.route("/graphics", methods=["POST"])
 def graphics():
     file: FileStorage = request.files["file"]
-    graphics = getGraphics(file)
+    df : DataFrame = file.read()
+    graphics = getGraphics(df)
     return graphics
 
 @app.route("/clustering", methods=["POST"])
 def createClusters():
     file: FileStorage = request.files["file"]
-    clusters = clustering.kmeans(file)
+    df : DataFrame = read_csv(file)
+    clusters = clustering.kmeans(df)
     return {
         "data": clusters,
         "type": "cluster",
