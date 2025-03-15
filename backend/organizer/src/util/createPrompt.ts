@@ -1,4 +1,4 @@
-import { ExtractedType } from "./extract-type";
+import { ExtractedType } from "../interfaces/extract-type";
 
 const maxMethods = 3;
 

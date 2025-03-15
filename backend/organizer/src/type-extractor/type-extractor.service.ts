@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
-import { ExtractedType } from 'src/util/extract-type';
+import { ExtractedType } from 'src/interfaces/extract-type';
 
 @Injectable()
 export class TypeExtractorService {

@@ -1,4 +1,4 @@
-import { ExtractedType } from 'src/util/extract-type';
+import { ExtractedType } from 'src/interfaces/extract-type';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Long } from 'typeorm';
 
 @Entity('files')
