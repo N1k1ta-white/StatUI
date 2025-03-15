@@ -52,21 +52,15 @@ export function StandardPiePlot({ values, labels, title }: { values: number[]; l
 }
 
 // Scatter Plot Component
-export function ScatterPlot({
-    data,
-    title,
-    xAxisLabel,
-    yAxisLabel,
-}: {
+export function ScatterPlot({ data, title, xAxisLabel, yAxisLabel,}: {
     data: { x: number[]; y: number[]; mode: string }[];
     title: string;
     xAxisLabel: string;
     yAxisLabel: string;
 }) {
-    const plotData = Array.isArray(data) ? data : [];
     return (
         <Plot
-            data={plotData.map((d) => ({
+            data={data.map((d) => ({
                 x: d.x,
                 y: d.y,
                 mode: d.mode,

@@ -1,5 +1,6 @@
 import {NavLink, Outlet, useNavigate} from 'react-router-dom'
 import {cn} from "@/lib/utils.ts";
+import Loader from "@/components/Loader.tsx";
 
 export default function RootPage() {
     const navigate = useNavigate();
@@ -39,6 +40,7 @@ export default function RootPage() {
             {/* Main Content */}
             <main className="h-fit py-3 px-12">
                 <Outlet/>
+                <Loader/>
             </main>
         </div>
     )
