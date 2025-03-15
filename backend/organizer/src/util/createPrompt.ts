@@ -1,4 +1,6 @@
+import { stat } from "fs";
 import { ExtractedType } from "../interfaces/extract-type";
+import { statisticMethods } from "./methods";
 
 const maxMethods = 3;
 
@@ -12,7 +14,7 @@ export function createPrompt(notes: string, scheme: Record<string, ExtractedType
         return `- ${key} (${type}${typeDetails})${description ? ': ' + description : ''}`;
         }).join('\n')}
         Notes about data: ${notes}
-        Available statistical models/techniques: {Pearson's Correlation Coefficient, Spearman's Rank Correlation, Kendall's Tau, Cross-Correlation, Variance Inflation Factor, Linear Regression, Multiple Regression, Logistic Regression, Polynomial Regression, Probit & Tobit Regression, Cox Regression, Lasso Regression, K-means Clustering, Hierarchical Clustering, DBSCAN, Gaussian Mixture Models}
+        Available statistical models/techniques: ${Object.values(statisticMethods).flat().join(', ')}
 
         Task:
         Based on the provided dataset attributes, their types, and any given notes or expectations, determine the most appropriate statistical methods for analyzing the data and extracting meaningful insights.

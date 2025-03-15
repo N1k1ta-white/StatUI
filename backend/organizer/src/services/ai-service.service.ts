@@ -16,6 +16,7 @@ export class AiSuggestionService {
     async suggestAnalysisMethods(@Body() fileId: string, notes: string ): Promise<AnalysisMethod[]> {
         const extractedTypes = await this.fileService.extractTypes(fileId);
         const prompt = createPrompt(notes, extractedTypes);
+        console.log('Prompt:', prompt);
 
         let methods: AnalysisMethod[] = [];
         const maxAttempts = 3;
