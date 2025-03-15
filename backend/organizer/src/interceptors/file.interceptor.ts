@@ -1,6 +1,7 @@
 import { Injectable, UnsupportedMediaTypeException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FileUploadInterceptor {
@@ -9,7 +10,8 @@ export class FileUploadInterceptor {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, callback) => {
-          const uniqueName = `${Date.now()}-${file.originalname}`;
+            const fileExt = file.originalname.split('.').pop();
+            const uniqueName = `${Date.now()}-${uuidv4()}.${fileExt}`;
           callback(null, uniqueName);
         },
       }),
