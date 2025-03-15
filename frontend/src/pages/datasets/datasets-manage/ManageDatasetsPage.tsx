@@ -4,6 +4,7 @@ import {useCallback, useState} from "react";
 import {Input} from "@/components/ui/input.tsx";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import store from "@/store/store.ts";
 
 
 function ManageDatasetsPage() {
@@ -20,7 +21,7 @@ function ManageDatasetsPage() {
     const sendData = async () => {
         try {
             console.log({file, inputValues, notes})
-            //await store.dispatch(fetchCreateProduct({file, inputValues, notes})).unwrap()
+
         } catch (error) {
             alert(error);
         }
