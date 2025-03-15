@@ -29,13 +29,12 @@ export const fetchUploadContext = createAsyncThunk<descriptiveResponse, {
         try {
             const formData = new FormData();
             formData.append('file', contextData.file!);
-            formData.append('inputValues', JSON.stringify(contextData.inputValues));
-            formData.append('notes', contextData.notes);
+            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
+            // formData.append('notes', contextData.notes);
             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/api/descriptive`;
             return await fetchFormDataAuth<descriptiveResponse>(query, {
                 method: 'POST',
-                body: formData,
-                credentials: "include"
+                body: formData
             });
         } catch (error) {
             throw new Error((error as Error).message);
