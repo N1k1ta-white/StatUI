@@ -8,7 +8,7 @@ function VisualizationDatasetsPage() {
      return (
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">VisualizationDatasetsPage</h1>
-
+             <DataTable/>
             <Heatmap z={[[1, 20, 30], [20, 1, 60], [30, 60, 1]]} values_x={["A", "B", "C"]} values_y={["A", "B", "C"]} title="Heatmap Example" />
             <StandardHistogramPlot x={[1, 2, 3, 4]} name="Histogram" title="Histogram Example" />
             <StandardPiePlot values={[19, 26, 55]} labels={["A", "B", "C"]} title="Pie Chart Example" />
@@ -49,7 +49,7 @@ function VisualizationDatasetsPage() {
                 csvUrl="https://raw.githubusercontent.com/plotly/datasets/master/3d-scatter.csv"
                 title="3D Scatter Plot Example"
             />
-            <DataTable/>
+            
          </div>
      );
 }

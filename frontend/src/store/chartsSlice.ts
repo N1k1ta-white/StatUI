@@ -20,10 +20,10 @@ const initialState: State = {
 
 
 export const fetchUploadContext = createAsyncThunk<descriptiveResponse, {
-    file:File|null,
+    file:File | null,
     inputValues:{[key:string]:string}
     notes:string
-}>(
+    }>(
     'chartSlice/fetchUploadContext',
     async (contextData) => {
         try {

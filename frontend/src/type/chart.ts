@@ -17,14 +17,19 @@ export interface ChartInterfaceCreateGraphics extends ChartReduxInterface{
 export interface ChartInterfaceClustering extends ChartReduxInterface{
     data:[{[key: string]: { x: number; y: number }[]}]
 }
+export interface descriptiveResponse{
+    [key: string]: {[key: string]: number}[];
+}
 
+  
 export interface ChartInterfaceCorrelation extends ChartReduxInterface {
     data: {
       heatMap?: {
         type: "heatMap";
         methodName: string;
         data: {
-          variables: string[];
+          variablesX: string[] 
+		  variablesY: string[]
           matrix: number[][];
           pValues?: number[][];
         };

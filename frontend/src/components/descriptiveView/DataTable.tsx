@@ -36,7 +36,7 @@ const renderTable = (data: descriptiveResponse) => {
           <tr key={stat} className="border-b">
             <td className="py-2 px-4 text-gray-800">{stat}</td>
             {Object.keys(data).map((key) => {
-              const value = (data[key][0] as { [key: string]: number })[stat] ?? '-'; // Display value or '-' if not available
+              const value = (data[key][0] as { [key: string]: number })[stat] ?? '-';
               return (
                 <td key={key} className="py-2 px-4 text-gray-800">
                   {value}
@@ -54,9 +54,10 @@ const DataTable: React.FC = () => {
 
   const descriptiveData = useSelector((state: RootState) => state.chartsData.descriptiveResponse);
 
-  useEffect(() => {},[descriptiveData])
+  useEffect(() => {console.log(descriptiveData)},[descriptiveData])
+
   return (
-    <div className="p-6 space-y-6 float-start">
+    <div className="p-6 space-y-6">
       <Card className="p-4 shadow-lg rounded-lg border border-gray-200 bg-white max-w-5xl mx-auto">
         <div className="text-lg font-semibold mb-4 text-gray-700">Statistical Overview</div>
         {renderTable(descriptiveData)}
