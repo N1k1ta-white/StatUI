@@ -2,7 +2,9 @@
 
 function ManageDatasetsPage() {
      return (
-         <div></div>
+         <div>
+              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">ManageDatasetsPage</h1>
+         </div>
      );
 }
 

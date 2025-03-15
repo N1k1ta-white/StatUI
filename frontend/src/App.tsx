@@ -4,6 +4,7 @@ import RootPage from "@/pages/RootPage.tsx";
 import HomePage from "@/pages/home/HomePage.tsx";
 import ManageDatasetsPage from "@/pages/datasets/datasets-manage/ManageDatasetsPage.tsx";
 import VisualizationDatasetsPage from "@/pages/datasets/datasets-visualization/VisualizationDatasetsPage.tsx";
+import DatasetsPage from "@/pages/datasets/datasets-overview/DatasetsPage.tsx";
 
 const router = createBrowserRouter([
       {
@@ -12,8 +13,14 @@ const router = createBrowserRouter([
             errorElement: <ErrorPage message={'404 Not Found'} />,
             children: [
                   { index: true, element: <HomePage/> },
-                  { path: "datasets/manage", element: <ManageDatasetsPage/>},
-                  { path: "datasets/visualisation", element: <VisualizationDatasetsPage/>},
+                  {
+                        path: "datasets",
+                        element: <DatasetsPage/>,
+                        children: [
+                              { path: "manage", element: <ManageDatasetsPage/>},
+                              { path: "visualisation", element: <VisualizationDatasetsPage/>},
+                        ]
+                  }
                   // {
                   //       element: <AuthProtected />,
                   //       children: [
