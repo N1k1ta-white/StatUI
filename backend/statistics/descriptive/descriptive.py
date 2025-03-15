@@ -5,6 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 from .openAiClient import OPEN_AI_CLIENT
 from .selectMetricsPrompt import selectMetricsPrompt
+from sklearn.decomposition import PCA
 from .generateGraphicsPrompt import generateGraphicsPrompt
 from werkzeug.datastructures import FileStorage
 
@@ -29,13 +30,32 @@ def clustering(file: FileStorage):
 
     inertia = []
     silhouette_scores = []
-    K = range(3, 7)
+    clusters_count = range(3, 7)
     
-    for k in K:
+    for k in clusters_count:
         kmeans = KMeans(n_clusters=k, random_state=42)
         kmeans.fit(X_scaled)
         inertia.append(kmeans.inertia_)
 
         if k > 1:
             silhouette_scores.append(silhouette_score(X_scaled, kmeans.labels_))
-    return silhouette_scores
+        
+    optimal_clusters_count = clusters_count[np.argmax(silhouette_scores)]
+
+    model = KMeans(n_clusters=optimal_clusters_count, random_state=42)
+    model.fit(X_scaled)
+    pca = PCA(n_components=2)
+    X_pca = pca.fit_transform(X_scaled)
+
+    df['Cluster'] = kmeans.labels_
+    df['dim1'] = X_pca[:, 0]
+    df['dim2'] = X_pca[:, 1]
+    cluster_groups = df.groupby('Cluster').apply(
+        lambda x: x[['dim1', 'dim2']].apply(lambda row: {"x": row['dim1'], "y": row['dim2']}, axis=1).to_list()
+    ).reset_index()
+
+    result = cluster_groups.apply(lambda row: {
+        row['Cluster']: row[0]
+    }, axis=1).tolist()
+
+    return result
