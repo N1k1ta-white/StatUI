@@ -8,7 +8,7 @@ function DatasetsPage() {
         { path: "visualisation", label: "Visualize datasets"},
     ];
      return (
-         <div className="flex lg:flex-row flex-col gap-2 w-full h-screen">
+         <div className="flex lg:flex-row flex-col gap-2 w-full">
              <div className="lg:w-[20%] w-full border-gray-500 rounded">
                  <h2 className="text-lg font-bold pt-3 pb-3 text-left cursor-pointer">Data map</h2>
                  <ul className="border-l-2 border-gray-400 pl-4 flex flex-col gap-2">
