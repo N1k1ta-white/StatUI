@@ -4,12 +4,14 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { Express } from 'express';
 import { FileUploadInterceptor } from './interceptors/file.interceptor';
+import { FileService } from './services/file.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly fileService: FileService
   ) {}
 
   @Get()
@@ -22,6 +24,6 @@ export class AppController {
   @Post('upload')
   @UseInterceptors(FileUploadInterceptor.getInterceptor())
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
+    return await this.fileService.saveFile(file);
   }
 }
