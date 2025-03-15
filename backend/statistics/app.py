@@ -6,6 +6,7 @@ from werkzeug.datastructures import FileStorage
 from clustering.clustering import Clustering
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
 
+
 load_dotenv()
 
 app = Flask(__name__)

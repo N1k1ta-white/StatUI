@@ -6,7 +6,7 @@ from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
 
 class Clustering:
-    def kmeans(df: pd.DataFrame):
+    def kmeans(self, df: pd.DataFrame):
         numerical_features = df.select_dtypes(include=[np.number]).columns
         numerical_data = df[numerical_features]
 

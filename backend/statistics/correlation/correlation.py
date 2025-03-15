@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from scipy.stats import pearsonr, spearmanr, kendalltau
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 class Correlation:
