@@ -1,26 +1,30 @@
-import CsvUpload from "@/components/CsvUpload.tsx";
+import {CsvUpload} from "@/components/CsvUpload.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {Input} from "@/components/ui/input.tsx";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import store from "@/store/store.ts";
+import {fetchUploadContext} from "@/store/chartsSlice.ts";
+import {useNavigate} from "react-router-dom";
+
 
 function ManageDatasetsPage() {
     const [file, setFile] = useState<File | null>(null);
-    const [headers, setHeaders] = useState<string[]>([]);
     const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
     const [notes, setNotes] = useState<string>("");
-    const handleInputChange = (key: string, value: string) => {
-        setInputValues(prevState => ({
+    const navigate = useNavigate();
+    const handleInputChange = useCallback((key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValues((prevState) => ({
             ...prevState,
-            [key]: value, // Обновляем значение для конкретного поля
+            [key]: e.target.value,
         }));
-    };
+    }, []);
+
     const sendData = async () => {
         try {
-            console.log({file, inputValues, notes})
-            //await store.dispatch(fetchCreateProduct({file, inputValues, notes})).unwrap()
+            await store.dispatch(fetchUploadContext({file, inputValues, notes}))
+            navigate("/datasets/visualisation");
         } catch (error) {
             alert(error);
         }
@@ -30,20 +34,19 @@ function ManageDatasetsPage() {
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">Upload your dataset here.</h1>
                 <div className="flex gap-2">
-                    <CsvUpload setFile={setFile} setHeaders={setHeaders} className={"h-full"}/>
+                    <CsvUpload setFile={setFile} setInputValues={setInputValues} className="h-full" />
                     <div className="flex flex-1 flex-col gap-2 h-[44.5rem]">
                         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="h-[40%] w-full resize-none" placeholder="Type your notes here for AI processing"/>
                         <Card className="flex-1 overflow-y-auto p-2">
-                            <ul className="flex flex-col gap-2 overflow-y-auto">
-                                {(!headers || !headers.length) && <span className="text-gray-400">Describe your attributes here</span>}
-                                {headers?.map((header, key) => (
+                            <ul className="flex flex-col gap-2 overflow-auto">
+                                {Object.keys(inputValues).map((key) => (
                                     <li className="flex justify-between items-center" key={key}>
-                                        <span className="w-[40%]">{header}</span>
+                                        <span className="w-[40%]">{key}</span>
                                         <Input
                                             className="flex-1"
-                                            placeholder="Enter description"
-                                            value={inputValues[header] || ""} // Привязываем значение
-                                            onChange={(e) => handleInputChange(header, e.target.value)} // Обработчик изменений
+                                            type="text"
+                                            value={inputValues[key]}
+                                            onChange={handleInputChange(key)}  // При изменении значения вызываем обработчик
                                         />
                                     </li>
                                 ))}
