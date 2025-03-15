@@ -37,7 +37,7 @@ export default function RootPage() {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto py-3 px-12">
+            <main className="h-fit py-3 px-12">
                 <Outlet/>
             </main>
         </div>
