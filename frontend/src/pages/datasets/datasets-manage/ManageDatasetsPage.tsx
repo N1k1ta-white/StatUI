@@ -5,6 +5,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import store from "@/store/store.ts";
+import {fetchUploadContext} from "@/store/chartsSlice.ts";
 
 
 function ManageDatasetsPage() {
@@ -20,8 +21,7 @@ function ManageDatasetsPage() {
 
     const sendData = async () => {
         try {
-            console.log({file, inputValues, notes})
-
+            await store.dispatch(fetchUploadContext({file, inputValues, notes}))
         } catch (error) {
             alert(error);
         }
