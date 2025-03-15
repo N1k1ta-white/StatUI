@@ -3,6 +3,7 @@
         "dotenv",
         "dropna",
         "dtypes",
+        "iloc",
         "jsonify",
         "kmeans"
     ]
