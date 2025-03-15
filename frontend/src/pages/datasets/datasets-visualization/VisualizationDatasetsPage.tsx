@@ -24,9 +24,6 @@ function VisualizationDatasetsPage() {
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">VisualizationDatasetsPage</h1>
              <DataTable/>
-            <Heatmap z={[[1, 20, 30], [20, 1, 60], [30, 60, 1]]} values_x={["A", "B", "C"]} values_y={["A", "B", "C"]} title="Heatmap Example" />
-            <StandardHistogramPlot x={[1, 2, 3, 4]}  title="Histogram Example" />
-            <StandardPiePlot values={[19, 26, 55]} labels={["A", "B", "C"]} title="Pie Chart Example" />
              {
                  cluster &&
                  <ScatterPlot
@@ -36,6 +33,9 @@ function VisualizationDatasetsPage() {
                      title="Scatter Plot Example"
                  />
              }
+            <Heatmap z={[[1, 20, 30], [20, 1, 60], [30, 60, 1]]} values_x={["A", "B", "C"]} values_y={["A", "B", "C"]} title="Heatmap Example" />
+            <StandardHistogramPlot x={[1, 2, 3, 4]} name="Histogram" title="Histogram Example" />
+            <StandardPiePlot values={[19, 26, 55]} labels={["A", "B", "C"]} title="Pie Chart Example" />
             <GroupedBarPlot
                 data={[
                     { x: ["A", "B", "C"], y: [10, 20, 30], name: "Group 1" },

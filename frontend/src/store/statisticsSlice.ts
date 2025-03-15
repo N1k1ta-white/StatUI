@@ -60,7 +60,7 @@ export const fetchUploadCluster = createAsyncThunk<
             formData.append('file', state.chartsData.file);
             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
             // formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/clusters`;
+            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/clustering`;
             return await fetchFormDataAuth<ChartBase>(query, {
                 method: 'POST',
                 body: formData
@@ -109,8 +109,8 @@ const statisticsSlice = createSlice({
         .addCase(fetchUploadCluster.fulfilled,(state,action)=> {
             state.loading = false;
             state.error = null;
+            console.log(action.payload)
             state.statistics.charts.push(action.payload);
-            state.file = action.meta.arg.file;
 
         })
         .addCase(fetchUploadCluster.rejected,(state, action)=> {
