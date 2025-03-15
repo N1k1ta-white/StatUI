@@ -17,9 +17,6 @@ export class FileEntity {
     @Column()
     size: number;
 
-    @Column('blob') // For MySQL
-    content: Buffer;
-
     @CreateDateColumn()
     createdAt: Date;
 
