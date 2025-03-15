@@ -7,10 +7,11 @@ import { FileService } from './file.service';
 
 
 export interface AnalysisMethod {
-    models: string,
+    method: string,
     attributes_analysis: string[],
     expected_results: string[]
 }
+
 @Injectable()
 export class AiSuggestionService {
 

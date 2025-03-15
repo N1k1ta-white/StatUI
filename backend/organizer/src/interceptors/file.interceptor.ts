@@ -3,12 +3,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
+const destination = './uploads';
+
 @Injectable()
 export class FileUploadInterceptor {
   static getInterceptor() {
     return FileInterceptor('file', {
       storage: diskStorage({
-        destination: process.env.FILE_STORAGE_PATH,
+        destination,
         filename: (req, file, callback) => {
             const fileExt = file.originalname.split('.').pop();
             const uniqueName = `${Date.now()}-${uuidv4()}.${fileExt}`;

@@ -20,15 +20,19 @@ export class FileService {
         const uniqueName = fileData.filename;
         console.log('File saved:', uniqueName);
         const file = new FileEntity();
+        console.log('File saved:', file);
         file.fileName = uniqueName;
         file.originalName = fileData.originalname;
         file.mimeType = fileData.mimetype;
         file.size = fileData.size;
 
-        this.typeExtractorService.extractCsvTypes(this.getPath(file.fileName));   
-
-        const savedFile = await this.fileRepository.save(file);
-        return { file: savedFile, originalName: fileData.originalname };
+        try {
+            await this.typeExtractorService.extractCsvTypes(this.getPath(file.fileName));   
+            const savedFile = await this.fileRepository.save(file);
+            return { file: savedFile, originalName: fileData.originalname };
+        } catch (error) {
+            throw new BadRequestException('Failed to process file: ' + error.message);
+        }
     }
 
     async extractTypes(fileId: string): Promise<Record<string, any>> {
