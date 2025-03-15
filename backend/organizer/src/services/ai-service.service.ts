@@ -2,15 +2,8 @@ import { Body, Get, Injectable } from '@nestjs/common';
 import { parse } from 'path';
 import { chatWithLLM } from 'src/util/chatWithLLM';
 import { createPrompt } from 'src/util/createPrompt';
-import { ExtractedType } from 'src/util/extract-type';
 import { FileService } from './file.service';
-
-
-export interface AnalysisMethod {
-    method: string,
-    attributes_analysis: string[],
-    expected_results: string[]
-}
+import { AnalysisMethod } from 'src/interfaces/analysis-method.interface';
 
 @Injectable()
 export class AiSuggestionService {
@@ -21,10 +14,7 @@ export class AiSuggestionService {
 
     @Get('suggest')
     async suggestAnalysisMethods(@Body() fileId: string, notes: string ): Promise<AnalysisMethod[]> {
-        // TODO: Save extracted types to database 
         const extractedTypes = await this.fileService.extractTypes(fileId);
-        console.log('Extracted types:', extractedTypes);
-
         const prompt = createPrompt(notes, extractedTypes);
 
         let methods: AnalysisMethod[] = [];

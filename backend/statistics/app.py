@@ -31,7 +31,10 @@ def createClusters():
     file: FileStorage = request.files["file"]
     clusters = clustering(file)
     return {
-        "clusters": clusters
+        "data": clusters,
+        "type": "scatter",
+        "name": "Plot of the clusters",
+        "description": "The dimensionality of the data has been reduced to 2D using PCA. The clusters are visualized in this plot."
     }
 
 if __name__ == "__main__":

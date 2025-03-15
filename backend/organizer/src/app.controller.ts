@@ -6,8 +6,7 @@ import { Express } from 'express';
 import { FileUploadInterceptor } from './interceptors/file.interceptor';
 import { FileService } from './services/file.service';
 import { AiSuggestionService } from './services/ai-service.service';
-import { AnalysisMethod } from './services/ai-service.service';
-
+import { AnalysisMethod } from './interfaces/analysis-method.interface';
 @Controller()
 export class AppController {
   constructor(

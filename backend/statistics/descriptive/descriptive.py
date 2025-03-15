@@ -17,7 +17,7 @@ def getDescriptiveStatistics(file: FileStorage):
 def getGraphics(file: FileStorage):
     df = pd.read_csv(file)
     prompt = generateGraphicsPrompt(df)
-    return OPEN_AI_CLIENT.generate_response(prompt, "deepseek-chat")
+    return OPEN_AI_CLIENT.generate_response(prompt)
 
 def clustering(file: FileStorage):
     df = pd.read_csv(file)
@@ -58,4 +58,7 @@ def clustering(file: FileStorage):
         row['Cluster']: row[0]
     }, axis=1).tolist()
 
-    return result
+    result_dict = {}
+    for res in result:
+        result_dict.update(res)
+    return result_dict

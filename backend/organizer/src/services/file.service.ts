@@ -25,7 +25,8 @@ export class FileService {
         file.size = fileData.size;
 
         try {
-            await this.typeExtractorService.extractCsvTypes(this.getPath(file.fileName));   
+            file.typeOfAttributes =
+                await this.typeExtractorService.extractCsvTypes(this.getPath(file.fileName));   
             const savedFile = await this.fileRepository.save(file);
             return { file: savedFile, originalName: fileData.originalname };
         } catch (error) {
@@ -38,6 +39,7 @@ export class FileService {
         if (!file) {
             throw new BadRequestException('File not found');
         }  
-        return this.typeExtractorService.extractCsvTypes(this.getPath(file.fileName));
+
+        return file.typeOfAttributes;
     }
 }
