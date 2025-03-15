@@ -3,5 +3,11 @@ venv/
 __pycache__/
 **/.env
 **/.venv
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/frontend/public/vite.svg
+/.idea/workspace.xml
+/.vscode/
+
 **/.idea
 **/.vscode

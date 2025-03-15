@@ -1,6 +1,7 @@
 import {NavLink, Outlet, useNavigate} from 'react-router-dom'
 import {cn} from "@/lib/utils.ts";
 import Loader from "@/components/Loader.tsx";
+import ErrorToast from '@/components/ErrorToast';
 
 export default function RootPage() {
     const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function RootPage() {
             <main className="h-fit py-3 px-12">
                 <Outlet/>
                 <Loader/>
+                <ErrorToast/>
             </main>
         </div>
     )
