@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
@@ -30,4 +30,12 @@ export class AppController {
       originalName: result.originalName
     };
   }
+
+  @Get('types')
+  async extractTypes(@Body() data: { fileId: string }) {
+    console.log(data)
+    return this.fileService.extractTypes(data.fileId);
+  }
+
 }
+

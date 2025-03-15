@@ -1,31 +1,34 @@
-import {useEffect, useState} from "react";
+import {memo, useState} from "react";
 import { useDropzone } from "react-dropzone";
-import { Loader2 } from "lucide-react"; // Иконка загрузки
+import { Loader2 } from "lucide-react";
 
 interface Props {
     className?: string;
-    setHeaders: React.Dispatch<React.SetStateAction<string[]>>;
+    setInputValues: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
     setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
-export default function CsvUpload({ className, setHeaders, setFile }: Props) {
-    const [state, setState] = useState<{file: File | null, fileData: string[][], error: string, loading: boolean}>({
-        file: null,
+export const CsvUpload = memo(({ className, setInputValues, setFile } : Props) => {
+    const [state, setState] = useState<{
+        fileData: string[][];
+        error: string;
+        loading: boolean;
+    }>({
         fileData: [],
         error: "",
         loading: false
-    })
+    });
 
     const onDrop = (acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
         if (!file) return;
-        setState(prevState => ({...prevState, file, fileData: [], error: "", loading: true}))
+        setState((prevState) => ({ ...prevState, error: "", loading: true }));
+        setFile(file)
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent<FileReader>) => {
             const text = e.target?.result as string;
             processCSV(text);
         };
-
         reader.readAsText(file);
     };
 
@@ -34,22 +37,30 @@ export default function CsvUpload({ className, setHeaders, setFile }: Props) {
         accept: { "text/csv": [".csv"] }
     });
 
-    useEffect(() => {
-        setFile(state.file)
-    }, [setFile, state.file])
-
-    useEffect(() => {
-        setHeaders(state.fileData[0])
-    }, [setHeaders, state.fileData])
-
     const processCSV = (data: string) => {
         const rows = data.split("\n").map((row) => row.split(","));
-        setState(prevState => ({ ...prevState, fileData: rows, error: "", loading: false}))
+        const headers = rows[0];
+        const initialValues: { [key: string]: string } = {};
+        headers.forEach((header) => {
+            initialValues[header] = ""; // Заполняем значениями по умолчанию (пустыми строками)
+        });
+
+        // Обновляем состояния
+        setInputValues(initialValues);
+        setState((prevState) => ({
+            ...prevState,
+            fileData: rows, // Добавляем "..." перед последней строкой
+            error: "",
+            loading: false
+        }));
     };
 
     return (
         <div className={`${className} w-full max-w-3xl mx-auto`}>
-            <div {...getRootProps()} className="h-full border-2 border-dashed border-gray-300 p-6 text-center cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200 transition">
+            <div
+                {...getRootProps()}
+                className="h-full border-2 border-dashed border-gray-300 p-6 text-center cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+            >
                 <input {...getInputProps()} />
                 {isDragActive ? (
                     <p className="text-gray-700">Drop the file here...</p>
@@ -81,7 +92,7 @@ export default function CsvUpload({ className, setHeaders, setFile }: Props) {
                             </tr>
                             </thead>
                             <tbody>
-                            {state.fileData.slice(1).map((row, index) => (
+                            {state.fileData.map((row, index) => (
                                 <tr key={index} className="border-b">
                                     {row.map((cell, cellIndex) => (
                                         <td key={cellIndex} className="px-4 py-2">
@@ -97,4 +108,4 @@ export default function CsvUpload({ className, setHeaders, setFile }: Props) {
             )}
         </div>
     );
-}
+})

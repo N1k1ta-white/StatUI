@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
 // Heatmap Component
-export function Heatmap({ z, values, title }: { z: number[][]; values: string[]; title: string }) {
+export function Heatmap({ z, values_x,values_y, title }: { z: number[][]; values_x: string[];values_y: string[]; title: string }) {
     return (
         <Plot
             data={[
                 {
                     z,
-                    x: values,
-                    y: values,
+                    x: values_x,
+                    y: values_y,
                     type: "heatmap",
                     colorscale: "Viridis",
                 },
@@ -52,9 +52,18 @@ export function StandardPiePlot({ values, labels, title }: { values: number[]; l
 }
 
 // Scatter Plot Component
-export function ScatterPlot({ data, title }: { data: { x: number[]; y: number[]; mode: string }[]; title: string }) {
+export function ScatterPlot({
+    data,
+    title,
+    xAxisLabel,
+    yAxisLabel,
+}: {
+    data: { x: number[]; y: number[]; mode: string }[];
+    title: string;
+    xAxisLabel: string;
+    yAxisLabel: string;
+}) {
     const plotData = Array.isArray(data) ? data : [];
-
     return (
         <Plot
             data={plotData.map((d) => ({
@@ -63,7 +72,11 @@ export function ScatterPlot({ data, title }: { data: { x: number[]; y: number[];
                 mode: d.mode,
                 type: "scatter",
             }))}
-            layout={{ title: { text: title }, yaxis: { title: "Values" } }}
+            layout={{
+                title: { text: title },
+                xaxis: { title: { text: xAxisLabel } }, // Label for x-axis
+                yaxis: { title: { text: yAxisLabel } }, // Label for y-axis
+            }}
         />
     );
 }
