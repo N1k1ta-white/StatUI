@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { ExtractedType } from 'src/util/extract-type';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Long } from 'typeorm';
 
 @Entity('files')
 export class FileEntity {
@@ -22,4 +23,7 @@ export class FileEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @Column({type: 'json'})
+    typeOfAttributes: Record<string, ExtractedType>;
 }
