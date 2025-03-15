@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import store, { persistor } from "@/store/store.ts";
 import App from './App.tsx'
 import { PersistGate } from 'redux-persist/integration/react';
-import {Loader} from "lucide-react";
+import Loader from "./components/Loader.tsx";
 
 
 createRoot(document.getElementById('root')!).render(
