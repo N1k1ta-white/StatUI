@@ -58,4 +58,4 @@ def clustering(file: FileStorage):
         row['Cluster']: row[0]
     }, axis=1).tolist()
 
-    return result
+    return result[0]
