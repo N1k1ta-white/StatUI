@@ -9,23 +9,25 @@ load_dotenv()
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(
+    app
+)
 
-@app.route("/descriptive", methods=["POST"])
-@cross_origin()
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
+    print(request.files)
     file: FileStorage = request.files["file"]
     statistics = getDescriptiveStatistics(file)
     return statistics
 
 @app.route("/graphics", methods=["POST"])
-@cross_origin()
 def graphics():
     file: FileStorage = request.files["file"]
     graphics = getGraphics(file)
     return graphics
 
-@cross_origin()
 @app.route("/clustering", methods=["POST"])
 def createClusters():
     file: FileStorage = request.files["file"]

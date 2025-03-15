@@ -1,12 +1,9 @@
-'use server';
-async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
+export async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
     const response = await fetch(url, {
         ...options,
         headers: {
-            ...options?.headers,
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include'
+            ...options?.headers
+        }
     });
 
     if (!response.ok) {
@@ -16,4 +13,22 @@ async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
 
     return await response.json();
 }
- export default fetchData
+
+export async function fetchDataAuth<T>(url: string, options?: RequestInit): Promise<T> {
+    return await fetchData(url, {
+        ...options,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem(import.meta.env.VITE_JWT_KEY_TO_LOCAL_STORAGE ?? "")}`,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
+export async function fetchFormDataAuth<T>(url: string, options?: RequestInit): Promise<T> {
+    return await fetchData(url, {
+        ...options,
+        headers: {
+            // 'Authorization': `Bearer ${localStorage.getItem(import.meta.env.VITE_JWT_KEY_TO_LOCAL_STORAGE ?? "")}`
+        }
+    });
+}
