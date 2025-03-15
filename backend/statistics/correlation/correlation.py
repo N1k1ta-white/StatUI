@@ -24,6 +24,10 @@ class Correlation:
         for i in range(n):
             for j in range(n):
                 cross_corr[i, j] = correlate(data.iloc[:, i] - mean(data.iloc[:, i]), 
-                                                data.iloc[:, j] - mean(data.iloc[:, j])) / \
-                                        (std(data.iloc[:, i]) * std(data.iloc[:, j]) * len(data))
+                                data.iloc[:, j] - mean(data.iloc[:, j])) / \
+                            (std(data.iloc[:, i]) * std(data.iloc[:, j]) * len(data))
+        
+        cross_corr = DataFrame(cross_corr, 
+                     columns=data.columns,
+                     index=data.columns)
         return cross_corr

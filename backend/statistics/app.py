@@ -44,5 +44,18 @@ def createClusters():
         "description": "The dimensionality of the data has been reduced to 2D using PCA. The clusters are visualized in this plot."
     }
 
+@app.route("/correlation", methods=["POST"])
+def correlation():
+    file: FileStorage = request.files["file"]
+    df : DataFrame = read_csv(file)
+    correlation_matrix = correlation.pearson_correlation_matrix(df)
+    return {
+        "data": {
+            "methodName": "Pearson's Correlation Coefficient",
+            "correlationMatrix": correlation_matrix.values.tolist(),
+            "values": correlation_matrix.columns.tolist
+        }
+    }
+
 if __name__ == "__main__":
     app.run()
