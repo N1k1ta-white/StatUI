@@ -1,7 +1,6 @@
-import {memo, useRef, useState} from "react";
+import {memo, useState} from "react";
 import { useDropzone } from "react-dropzone";
 import { Loader2 } from "lucide-react";
-import {useVirtual} from "react-virtual";
 
 interface Props {
     className?: string;
