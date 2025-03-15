@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as csv from 'csv-parser';
-
-interface ExtractedType {
-  type: string;
-  factors?: string[];
-}
+import { ExtractedType } from 'src/util/extract-type';
 
 @Injectable()
 export class TypeExtractorService {
@@ -37,7 +33,7 @@ export class TypeExtractorService {
                 const uniqueValues = Array.from(values);
                 const detectedType = this.detectType(uniqueValues);
     
-                inferredTypes[key] = { type: detectedType };
+                inferredTypes[key] = { name: key, type: detectedType }; // Store directly in object
 
                 // If it's a categorical variable (factor), add factor values
                 if (detectedType === 'factor') {
