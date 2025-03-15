@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ChartReduxInterface, descriptiveResponse} from "@/type/chart.ts";
-import fetchData from "@/lib/fetch";
+import {fetchFormDataAuth} from "@/lib/fetch";
 import {defaultDescriptiveMockdata} from "@/lib/utils.ts";
 
 interface State {
@@ -31,17 +31,12 @@ export const fetchUploadContext = createAsyncThunk<descriptiveResponse, {
             formData.append('file', contextData.file!);
             formData.append('inputValues', JSON.stringify(contextData.inputValues));
             formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/api/uploadcontext`;
-            const response = await fetch(query, {
+            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/api/descriptive`;
+            return await fetchFormDataAuth<descriptiveResponse>(query, {
                 method: 'POST',
                 body: formData,
                 credentials: "include"
             });
-            if (!response.ok) {
-                const errorResponse = await response.json().catch(() => null);
-                throw new Error(errorResponse?.message || 'Неизвестная ошибка');
-            }
-            return await response.json();
         } catch (error) {
             throw new Error((error as Error).message);
         }
