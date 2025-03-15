@@ -27,6 +27,8 @@ export class AppController {
   @Post('upload')
   @UseInterceptors(FileUploadInterceptor.getInterceptor())
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+
     const result = await this.fileService.saveFile(file);
     return {
       ...result.file,
@@ -36,7 +38,6 @@ export class AppController {
 
   @Get('types')
   async extractTypes(@Body() data: { fileId: string }) {
-    console.log(data)
     return this.fileService.extractTypes(data.fileId);
   }
 
