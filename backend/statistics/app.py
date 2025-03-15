@@ -2,7 +2,7 @@ from flask import Flask, request
 from dotenv import load_dotenv
 from werkzeug.datastructures import FileStorage
 
-from descriptive import getDescriptiveStatistics
+from descriptive.descriptive import getDescriptiveStatistics
 
 load_dotenv()
 
@@ -12,7 +12,7 @@ app = Flask(__name__)
 def hello_world():
     file: FileStorage = request.files["file"]
     statistics = getDescriptiveStatistics(file)
-    return statistics.to_json()
+    return statistics
 
 if __name__ == "__main__":
     app.run()
