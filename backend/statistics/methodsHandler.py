@@ -69,6 +69,11 @@ def apply_methods(df: DataFrame, json_array):
             numeric_cols = [col for col in attribute_analysis[1:] if df[col].dtype.kind in 'ifc']
             X = df[numeric_cols]
             num_dimensions = len(attribute_analysis) - 1
-            return regression_methods[method](X, y, num_dimensions)
+            return {
+                'type': 'regression',
+                'name': 'Linear Regression',
+                "data": regression_methods[method](X, y, num_dimensions),
+                "description": "The dimensionality of the data has been reduced to 1D using LSA. The regression line is visualized in this plot."
+            }
         else:
             return {"error": "Method not found"}
