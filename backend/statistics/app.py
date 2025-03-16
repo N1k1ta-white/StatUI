@@ -7,6 +7,7 @@ from fileManager.fileManager import check_file, upload_file
 
 from regression.regression import Regression
 from clustering.clustering import Clustering
+from correlation.correlation import Correlation
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
 
 load_dotenv()
@@ -19,6 +20,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 clustering = Clustering()
 regression = Regression()
+correlation = Correlation()
 
 @app.route("/check-file/:name", methods=["GET"])
 def check_file():
@@ -32,7 +34,6 @@ def upload_file():
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
-    print(request.files)
     file: FileStorage = request.files["file"]
     df : DataFrame = read_csv(file)
     statistics = getDescriptiveStatistics(df)
