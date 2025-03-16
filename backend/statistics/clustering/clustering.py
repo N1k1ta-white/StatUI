@@ -16,7 +16,7 @@ class Clustering:
 
         inertia = []
         silhouette_scores = []
-        clusters_count = range(3, 7)
+        clusters_count = range(3, 6)
         
         for k in clusters_count:
             kmeans = KMeans(n_clusters=k, random_state=42)

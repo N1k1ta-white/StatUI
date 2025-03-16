@@ -72,6 +72,7 @@ class Regression:
     def logistic_regression(self, X: DataFrame, y: Series, n_components):
         """Logistic regression for binary classification"""
         model = LogisticRegression(random_state=42)
+        y = y.astype(int)
         model.fit(X, y)
         X_reduced = self.reduce_dimensions(X, n_components)
         X_reduced = self.make_flatten(X_reduced)
