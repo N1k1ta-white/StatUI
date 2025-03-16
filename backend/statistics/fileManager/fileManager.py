@@ -1,7 +1,5 @@
 import os
-from backend.statistics import app
 from flask import jsonify, request
-
 
 UPLOAD_FOLDER = 'uploads'  # Define your upload directory
 

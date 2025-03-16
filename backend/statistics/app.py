@@ -3,7 +3,9 @@ from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
 from werkzeug.datastructures import FileStorage
 from pandas import DataFrame, read_csv
+from fileManager.fileManager import check_file, upload_file
 
+from regression.regression import Regression
 from clustering.clustering import Clustering
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
 
@@ -16,6 +18,17 @@ CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 clustering = Clustering()
+regression = Regression()
+
+@app.route("/check-file/:name", methods=["GET"])
+def check_file():
+    fileName = request.args.get("name")
+    check_file(fileName)
+
+@app.route("/upload-file", methods=["POST"])
+def upload_file():
+    file: FileStorage = request.files["file"]
+    upload_file(file.filename)
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():

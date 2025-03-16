@@ -8,7 +8,7 @@ from statsmodels.discrete.discrete_model import Probit
 import statsmodels.api as sm
 from sklearn.decomposition import TruncatedSVD
 
-class RegressionAnalytics:
+class Regression:
     def __init__(self):
         pass
 
