@@ -8,6 +8,12 @@ interface DataPointStrings {
     x: string;
     y: string;
 }
+interface AnalysisMethodRequest {
+    method: string,
+    attributes_analysis: string[],
+    expected_results: string[]
+}
+
 
 export interface ChartBase {
     type: string;
@@ -48,6 +54,27 @@ export interface ChartInterfaceCorrelation extends ChartBase {
         heatMap?: ChartInterfaceHeatMap
         scatterPlot?: ChartInterfaceScatterPlot;
     };
+}
+
+export interface ChartInterfacePie extends ChartBase {
+    data:{
+        values: number[];
+        labels: string[];
+        title:string;
+    }
+}
+
+interface BarBase{
+    x: string[];
+    y: number[];
+    name:string;
+}
+
+export interface ChartInterfaceBar extends ChartBase {
+    data:{
+        data: BarBase[];
+        title:string;
+    }
 }
 
 export interface ChartInterfaceRegression  extends ChartBase {

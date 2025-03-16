@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ChartBase, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
-import {fetchFormDataAuth} from "@/lib/fetch";
+import {fetchData, fetchFormDataAuth} from "@/lib/fetch";
 import {RootState} from "@/store/store.ts";
 
 export interface State {
@@ -120,6 +120,33 @@ export const fetchUploadRegression = createAsyncThunk<
     }
 )
 
+export const fetchAnalysisMethod = createAsyncThunk<
+    ChartBase,
+    {
+        method: string;
+        attributes_analysis: string[];
+        notes: string;
+    },
+    { state: RootState }
+>(
+'chartSlice/fetchAnalysisMethod',
+async (methodData,{getState}) => {
+    try {
+
+        const state = getState();
+        const query = `${import.meta.env.VITE_API_STATISTICS_URL}/${state.chartsData.statistics.fileId}/method`;//TODO: change to analysis method
+        return await fetchData<ChartBase>(query, {
+            method: 'POST',
+            body:JSON.stringify( {
+                method: JSON.stringify(methodData.attributes_analysis),
+                attributes_analysis: methodData.attributes_analysis,
+            })
+        });
+    } catch (error) {
+        throw new Error((error as Error).message);
+    }
+}
+)
 
 const statisticsSlice = createSlice({
     name: 'statisticsSlice',
@@ -191,6 +218,21 @@ const statisticsSlice = createSlice({
 
             })
             .addCase(fetchUploadRegression.rejected,(state, action)=> {
+                state.loading = false;
+                state.error = action.error.message || "Неизвестна грешка";
+            })
+            .addCase(fetchAnalysisMethod.pending,(state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchAnalysisMethod.fulfilled,(state,action)=> {
+                state.loading = false;
+                state.error = null;
+                console.log(action.payload)
+                state.statistics.charts.push(action.payload);
+
+            })
+            .addCase(fetchAnalysisMethod.rejected,(state, action)=> {
                 state.loading = false;
                 state.error = action.error.message || "Неизвестна грешка";
             })
