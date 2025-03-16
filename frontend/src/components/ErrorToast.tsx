@@ -1,16 +1,17 @@
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store.ts";
+import store, { RootState } from "@/store/store.ts";
 
 import { Toaster } from "@/components/ui/sonner";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { updateError } from "@/store/statisticsSlice";
 
 const ErrorToast: React.FC = () => {
 
     const error = useSelector((state: RootState) =>
         Object.values(state).find(slice => slice.error)?.error
     );
-
+    
     useEffect(() => {
         if (error) {
             toast("Error occurred", {
@@ -26,6 +27,7 @@ const ErrorToast: React.FC = () => {
                     border: "1px solid #f5c6cb",
                 },
             });
+            store.dispatch(updateError(null));
         }
     }, [error]);
 
