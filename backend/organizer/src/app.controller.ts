@@ -37,6 +37,11 @@ export class AppController {
     return this.fileService.extractTypes(data.fileId);
   }
 
+  @Get('descriptive/:fileId')
+  async getDescriptiveStatistics(@Param('fileId') fileId: string) {
+    return this.statisticsService.getDescriptiveStatistics(fileId);
+  }
+
   @Get('suggest')
   async suggestAnalysisMethods(@Body() data : { fileId: string, notes: string } ): Promise<AnalysisMethod[]> {
     return this.aiService.suggestAnalysisMethods(data.fileId, data.notes);

@@ -67,4 +67,10 @@ export class StatisticService {
         }
     }
     
+    async getDescriptiveStatistics(fileId: string) {
+        this.submitFileToStatistics(fileId);
+        const name = await this.fileService.getName(fileId);
+        const response = await lastValueFrom(this.httpService.get(`${this.url}/descriptive/${name}`));
+        return response.data;
+    }
 }
