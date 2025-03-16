@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import store from "@/store/store.ts";
-import {fetchUploadContext, updateError} from "@/store/statisticsSlice.ts";
+import {fetchUploadContext, fetchUploadFile, fetchUploadSuggestedCharts, updateError} from "@/store/statisticsSlice.ts";
 import {useNavigate} from "react-router-dom";
 
 
@@ -23,8 +23,8 @@ function ManageDatasetsPage() {
 
     const sendData = async () => {
         try {
-            await store.dispatch(fetchUploadContext({file, inputValues, notes}))
-            navigate("/datasets/visualisation");
+            await store.dispatch(fetchUploadFile({file, inputValues, notes})).unwrap()
+            // navigate("/datasets/visualisation");
         } catch (error) {
             console.log((error as Error).message);
             store.dispatch(updateError(null))

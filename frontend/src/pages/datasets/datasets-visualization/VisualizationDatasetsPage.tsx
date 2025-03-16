@@ -1,14 +1,9 @@
 import DataTable from "@/components/descriptiveView/DataTable";
-import { useEffect } from "react";
 import {useSelector} from "react-redux";
 import store, {RootState} from "@/store/store.ts";
-import {
-    fetchUploadCluster,
-    fetchUploadCorrelation,
-    fetchUploadRegression,
-    updateError
-} from "@/store/statisticsSlice.ts";
+import { fetchUploadStatistics, fetchUploadSuggestedCharts } from "@/store/statisticsSlice.ts";
 import DefinedChart from "@/components/DefinedChart.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 // function transformClusters({data}: ChartInterfaceClustering) {
 //     return Object.values(data).map(cluster => ({
@@ -21,25 +16,30 @@ import DefinedChart from "@/components/DefinedChart.tsx";
 function VisualizationDatasetsPage() {
     const charts = useSelector((state: RootState) => state.chartsData.statistics.charts);
     const descriptive = useSelector((state: RootState) => state.chartsData.statistics.descriptiveStatistics);
-    useEffect(() => {
-        const getCharts = async () => {
-            await store.dispatch(fetchUploadCluster())
-            await store.dispatch(fetchUploadRegression())
-            await store.dispatch(fetchUploadCorrelation())
-        }
+    const handleGetDescriptiveStatistics = async () => {
         try {
-            if(!charts.length) {
-                getCharts()
-            }
+            await store.dispatch(fetchUploadStatistics()).unwrap()
         } catch (error) {
-            console.error((error as Error).message)
-            store.dispatch(updateError(null))
+            console.log((error as Error).message);
         }
-    }, []);
+    }
+    const handleGeSuggestedCharts = async () => {
+        try {
+            await store.dispatch(fetchUploadSuggestedCharts()).unwrap()
+        } catch (error) {
+            console.log((error as Error).message);
+        }
+    }
+
      return (
          <div>
-             <h1 className="text-xl font-bold pt-3 pb-3 text-left ">VisualizationDatasetsPage</h1>
+             <h1 className="text-xl font-bold pt-3 pb-3 text-left ">Visualization Datasets Page</h1>
+             <div className="w-full gap-4 flex justify-start items-center">
+                 <Button onClick={handleGetDescriptiveStatistics}>Upload Descriptive Statistics</Button>
+                 <Button onClick={handleGeSuggestedCharts}>Upload Suggested Charts</Button>
+             </div>
              <div className="w-full gap-4 flex justify-between items-start">
+                 {/*<MethodSelection/>*/}
                  {descriptive && <DataTable/>}
              </div>
              {

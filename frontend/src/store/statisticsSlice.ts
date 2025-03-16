@@ -1,7 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ChartBase, ChartInterfaceRegression, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
-import {fetchFormDataAuth} from "@/lib/fetch";
-import {ChartBase, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
+import {ChartBase, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";;
 import {fetchData, fetchFormDataAuth} from "@/lib/fetch";
 import {RootState} from "@/store/store.ts";
 
@@ -24,11 +22,17 @@ const initialState: State = {
     error: null,
 }
 
-export const fetchUploadContext = createAsyncThunk<DescriptiveStatistics, {
+export const fetchUploadFile = createAsyncThunk<
+    {
+        id: string,
+        originalName: string
+    },
+    {
         file:File | null,
         inputValues:{[key:string]:string}
         notes:string
-    }>(
+    }
+    >(
     'chartSlice/fetchUploadContext',
     async (contextData) => {
         try {
@@ -36,8 +40,8 @@ export const fetchUploadContext = createAsyncThunk<DescriptiveStatistics, {
             formData.append('file', contextData.file!);
             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
             // formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/descriptive`;
-            return await fetchFormDataAuth<DescriptiveStatistics>(query, {
+            const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/api/upload`;
+            return await fetchFormDataAuth<{ id: string, originalName: string }>(query, {
                 method: 'POST',
                 body: formData
             });
@@ -47,74 +51,34 @@ export const fetchUploadContext = createAsyncThunk<DescriptiveStatistics, {
     }
 )
 
-export const fetchUploadCluster = createAsyncThunk<
-    ChartBase,
-    void,
-    { state: RootState }
->(
-    'chartSlice/fetchUploadCluster',
+export const fetchUploadStatistics = createAsyncThunk<DescriptiveStatistics, void, { state: RootState }> (
+    'chartSlice/fetchUploadStatistics',
     async (_, { getState }) => {
         try {
             const state = getState();
-            if(!state.chartsData.file) throw Error('No file provided');
-            const formData = new FormData();
-            formData.append('file', state.chartsData.file);
-            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
-            // formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/clustering`;
-            return await fetchFormDataAuth<ChartBase>(query, {
-                method: 'POST',
-                body: formData
-            });
+            const fileId = state.chartsData.statistics.fileId
+            if(!fileId)
+                throw Error('No file provided');
+            const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/api/descriptive/${fileId}`;
+            return await fetchData<DescriptiveStatistics>(query);
         } catch (error) {
             throw new Error((error as Error).message);
         }
     }
 )
 
-export const fetchUploadCorrelation = createAsyncThunk<
-    ChartBase,
-    void,
-    { state: RootState }
->(
-    'chartSlice/fetchUploadCorrelation',
+export const fetchUploadSuggestedCharts = createAsyncThunk<ChartBase[], void, { state: RootState }> (
+    'chartSlice/fetchUploadSuggestedCharts',
     async (_, { getState }) => {
         try {
             const state = getState();
-            if(!state.chartsData.file) throw Error('No file provided');
-            const formData = new FormData();
-            formData.append('file', state.chartsData.file);
-            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
-            // formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/correlation`;
-            return await fetchFormDataAuth<ChartBase>(query, {
-                method: 'POST',
-                body: formData
-            });
-        } catch (error) {
-            throw new Error((error as Error).message);
-        }
-    }
-)
-
-export const fetchUploadRegression = createAsyncThunk<
-    ChartBase,
-    void,
-    { state: RootState }
->(
-    'chartSlice/fetchUploadRegression',
-    async (_, { getState }) => {
-        try {
-            const state = getState();
-            if(!state.chartsData.file) throw Error('No file provided');
-            const formData = new FormData();
-            formData.append('file', state.chartsData.file);
-            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
-            // formData.append('notes', contextData.notes);
-            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/regression`;
-            return await fetchFormDataAuth<ChartBase>(query, {
-                method: 'POST',
-                body: formData
+            const fileId = state.chartsData.statistics.fileId
+            if(!fileId)
+                throw Error('No file provided');
+            const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/api/suggest`;
+            return await fetchData<ChartBase[]>(query, {
+                method: 'GET',
+                body: JSON.stringify(fileId)
             });
         } catch (error) {
             throw new Error((error as Error).message);
@@ -125,7 +89,7 @@ export const fetchUploadRegression = createAsyncThunk<
 export const fetchAnalysisMethod = createAsyncThunk<
     ChartBase,
     {
-        method: string;
+        methods: string[]
         attributes_analysis: string[];
         notes: string;
     },
@@ -134,13 +98,13 @@ export const fetchAnalysisMethod = createAsyncThunk<
 'chartSlice/fetchAnalysisMethod',
 async (methodData,{getState}) => {
     try {
-
         const state = getState();
-        const query = `${import.meta.env.VITE_API_STATISTICS_URL}/${state.chartsData.statistics.fileId}/method`;//TODO: change to analysis method
+        const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/statistic`;//TODO: change to analysis method
         return await fetchData<ChartBase>(query, {
             method: 'POST',
             body:JSON.stringify( {
-                method: JSON.stringify(methodData.attributes_analysis),
+                fileId: state.chartsData.statistics.fileId,
+                methods: JSON.stringify(methodData.methods),
                 attributes_analysis: methodData.attributes_analysis,
             })
         });
@@ -163,83 +127,207 @@ const statisticsSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder
-        .addCase(fetchUploadContext.pending,(state)=> {
+        .addCase(fetchUploadFile.pending,(state)=> {
             state.loading = true;
             state.error = null;
         })
-        .addCase(fetchUploadContext.fulfilled,(state,action)=> {
+        .addCase(fetchUploadFile.fulfilled,(state,action)=> {
             state.loading = false;
             state.error = null;
-            state.statistics.descriptiveStatistics = action.payload;
+            state.statistics.fileId = action.payload.id;
+            state.statistics.fileName = action.payload.originalName;
             state.file = action.meta.arg.file;
 
         })
-        .addCase(fetchUploadContext.rejected,(state, action)=> {
+        .addCase(fetchUploadFile.rejected,(state, action)=> {
             state.loading = false;
             state.error = action.error.message || "Неизвестна грешка";
         })
-        .addCase(fetchUploadCluster.pending,(state)=> {
+
+
+
+        .addCase(fetchUploadStatistics.pending,(state)=> {
             state.loading = true;
             state.error = null;
         })
-        .addCase(fetchUploadCluster.fulfilled,(state,action)=> {
+        .addCase(fetchUploadStatistics.fulfilled,(state,action)=> {
             state.loading = false;
             state.error = null;
-            console.log(action.payload)
-            state.statistics.charts.push(action.payload);
+            state.statistics.descriptiveStatistics = action.payload;
 
         })
-        .addCase(fetchUploadCluster.rejected,(state, action)=> {
+        .addCase(fetchUploadStatistics.rejected,(state, action)=> {
             state.loading = false;
             state.error = action.error.message || "Неизвестна грешка";
         })
-            .addCase(fetchUploadCorrelation.pending,(state)=> {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchUploadCorrelation.fulfilled,(state,action)=> {
-                state.loading = false;
-                state.error = null;
-                console.log(action.payload)
-                state.statistics.charts.push(action.payload);
 
-            })
-            .addCase(fetchUploadCorrelation.rejected,(state, action)=> {
-                state.loading = false;
-                state.error = action.error.message || "Неизвестна грешка";
-            })
-            .addCase(fetchUploadRegression.pending,(state)=> {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchUploadRegression.fulfilled,(state,action)=> {
-                state.loading = false;
-                state.error = null;
-                console.log(action.payload)
-                state.statistics.charts.push(action.payload);
 
-            })
-            .addCase(fetchUploadRegression.rejected,(state, action)=> {
-                state.loading = false;
-                state.error = action.error.message || "Неизвестна грешка";
-            })
-            .addCase(fetchAnalysisMethod.pending,(state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchAnalysisMethod.fulfilled,(state,action)=> {
-                state.loading = false;
-                state.error = null;
-                console.log(action.payload)
-                state.statistics.charts.push(action.payload);
 
-            })
-            .addCase(fetchAnalysisMethod.rejected,(state, action)=> {
-                state.loading = false;
-                state.error = action.error.message || "Неизвестна грешка";
-            })
+        .addCase(fetchUploadSuggestedCharts.pending,(state)=> {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(fetchUploadSuggestedCharts.fulfilled,(state,action)=> {
+            state.loading = false;
+            state.error = null;
+            state.statistics.charts = action.payload;
+        })
+        .addCase(fetchUploadSuggestedCharts.rejected,(state, action)=> {
+            state.loading = false;
+            state.error = action.error.message || "Неизвестна грешка";
+        })
+
+
+
+        .addCase(fetchAnalysisMethod.pending,(state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(fetchAnalysisMethod.fulfilled,(state,action)=> {
+            state.loading = false;
+            state.error = null;
+            state.statistics.charts.push(action.payload);
+
+        })
+        .addCase(fetchAnalysisMethod.rejected,(state, action)=> {
+            state.loading = false;
+            state.error = action.error.message || "Неизвестна грешка";
+        })
+
+
+
+        //
+        //     .addCase(fetchUploadCluster.pending,(state)=> {
+        //         state.loading = true;
+        //         state.error = null;
+        //     })
+        //     .addCase(fetchUploadCluster.fulfilled,(state,action)=> {
+        //         state.loading = false;
+        //         state.error = null;
+        //         console.log(action.payload)
+        //         state.statistics.charts.push(action.payload);
+        //
+        //     })
+        //     .addCase(fetchUploadCluster.rejected,(state, action)=> {
+        //         state.loading = false;
+        //         state.error = action.error.message || "Неизвестна грешка";
+        //     })
+        //
+        //
+        //
+        // .addCase(fetchUploadCorrelation.pending,(state)=> {
+        //     state.loading = true;
+        //     state.error = null;
+        // })
+        // .addCase(fetchUploadCorrelation.fulfilled,(state,action)=> {
+        //     state.loading = false;
+        //     state.error = null;
+        //     console.log(action.payload)
+        //     state.statistics.charts.push(action.payload);
+        //
+        // })
+        // .addCase(fetchUploadCorrelation.rejected,(state, action)=> {
+        //     state.loading = false;
+        //     state.error = action.error.message || "Неизвестна грешка";
+        // })
+        //
+        //
+        //
+        // .addCase(fetchUploadRegression.pending,(state)=> {
+        //     state.loading = true;
+        //     state.error = null;
+        // })
+        // .addCase(fetchUploadRegression.fulfilled,(state,action)=> {
+        //     state.loading = false;
+        //     state.error = null;
+        //     console.log(action.payload)
+        //     state.statistics.charts.push(action.payload);
+        //
+        // })
+        // .addCase(fetchUploadRegression.rejected,(state, action)=> {
+        //     state.loading = false;
+        //     state.error = action.error.message || "Неизвестна грешка";
+        // })
     }
 })
 
 export const { updateError, updateChartsWithChart } = statisticsSlice.actions;
 export default statisticsSlice.reducer;
+
+
+
+
+// export const fetchUploadCluster = createAsyncThunk<
+//     ChartBase,
+//     void,
+//     { state: RootState }
+// >(
+//     'chartSlice/fetchUploadCluster',
+//     async (_, { getState }) => {
+//         try {
+//             const state = getState();
+//             if(!state.chartsData.file) throw Error('No file provided');
+//             const formData = new FormData();
+//             formData.append('file', state.chartsData.file);
+//             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
+//             // formData.append('notes', contextData.notes);
+//             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/clustering`;
+//             return await fetchFormDataAuth<ChartBase>(query, {
+//                 method: 'POST',
+//                 body: formData
+//             });
+//         } catch (error) {
+//             throw new Error((error as Error).message);
+//         }
+//     }
+// )
+//
+// export const fetchUploadCorrelation = createAsyncThunk<
+//     ChartBase,
+//     void,
+//     { state: RootState }
+// >(
+//     'chartSlice/fetchUploadCorrelation',
+//     async (_, { getState }) => {
+//         try {
+//             const state = getState();
+//             if(!state.chartsData.file) throw Error('No file provided');
+//             const formData = new FormData();
+//             formData.append('file', state.chartsData.file);
+//             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
+//             // formData.append('notes', contextData.notes);
+//             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/correlation`;
+//             return await fetchFormDataAuth<ChartBase>(query, {
+//                 method: 'POST',
+//                 body: formData
+//             });
+//         } catch (error) {
+//             throw new Error((error as Error).message);
+//         }
+//     }
+// )
+//
+// export const fetchUploadRegression = createAsyncThunk<
+//     ChartBase,
+//     void,
+//     { state: RootState }
+// >(
+//     'chartSlice/fetchUploadRegression',
+//     async (_, { getState }) => {
+//         try {
+//             const state = getState();
+//             if(!state.chartsData.file) throw Error('No file provided');
+//             const formData = new FormData();
+//             formData.append('file', state.chartsData.file);
+//             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
+//             // formData.append('notes', contextData.notes);
+//             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/regression`;
+//             return await fetchFormDataAuth<ChartBase>(query, {
+//                 method: 'POST',
+//                 body: formData
+//             });
+//         } catch (error) {
+//             throw new Error((error as Error).message);
+//         }
+//     }
+// )
