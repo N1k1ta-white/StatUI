@@ -1,8 +1,8 @@
 import json
 import pandas as pd
-from correlation import Correlation
+from correlation.correlation import Correlation
 from werkzeug.datastructures import FileStorage
-from regression import Regression
+from regression.regression import Regression
 
 correlation = Correlation()
 regression = Regression()
@@ -10,11 +10,11 @@ regression = Regression()
 clustering = ["K-means Clustering", "Hierarchical Clustering", "DBSCAN", "Gaussian Mixture Model"]
 
 correlation_methods = {
-    "Pearson's Correlation Coefficient": correlation.pearson_correlation,
-    "Spearman's Rank Correlation": correlation.spearman_correlation,
-    "Kendall's Tau": correlation.kendall_correlation,
-    "Cross-Correlation": correlation.cross_correlation,
-    "Variance Inflation Factor": correlation.vif
+    "Pearson's Correlation Coefficient": correlation.pearson_correlation_matrix,
+    "Spearman's Rank Correlation": correlation.spearman_correlation_matrix,
+    "Kendall's Tau": correlation.kendall_tau_matrix,
+    "Cross-Correlation": correlation.cross_correlation_matrix,
+    "Variance Inflation Factor": correlation.calculate_vif
 }
 
 regression_methods = {
@@ -23,8 +23,7 @@ regression_methods = {
     "Logistic Regression": regression.logistic_regression,
     "Polynomial Regression": regression.polynomial_regression,
     "Lasso Regression": regression.lasso_regression,
-    "Probit & Tobit Regression": regression.probit_tobit_regression,
-    "Cox Regression": regression.cox_regression
+    "Probit & Tobit Regression": regression.probit_regression,
 }
 
 method_field = 0
