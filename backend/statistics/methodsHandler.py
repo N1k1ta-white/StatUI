@@ -2,8 +2,10 @@ import json
 import pandas as pd
 from correlation import Correlation
 from werkzeug.datastructures import FileStorage
+from regression import Regression
 
 correlation = Correlation()
+regression = Regression()
 
 clustering = ["K-means Clustering", "Hierarchical Clustering", "DBSCAN", "Gaussian Mixture Model"]
 
@@ -15,9 +17,15 @@ correlation_methods = {
     "Variance Inflation Factor": correlation.vif
 }
 
-regression = ["Linear Regression", "Multiple Regression", "Logistic Regression", 
-              "Polynomial Regression", "Lasso Regression", "Probit & Tobit Regression", 
-              "Cox Regression"]
+regression_methods = {
+    "Linear Regression": regression.linear_regression,
+    "Multiple Regression": regression.multiple_regression,
+    "Logistic Regression": regression.logistic_regression,
+    "Polynomial Regression": regression.polynomial_regression,
+    "Lasso Regression": regression.lasso_regression,
+    "Probit & Tobit Regression": regression.probit_tobit_regression,
+    "Cox Regression": regression.cox_regression
+}
 
 method_field = 0
 attribute_analysis_field = 1
@@ -42,14 +50,15 @@ def apply_methods(file : FileStorage, json_array):
 
     for method in methods:
         if method[method_field] in clustering:
-            # Call the appropriate clustering method here
-            print("Clustering method")
-            pass
+           print("Clustering")
+           pass
+        
         elif method[method_field] in correlation_methods:
             return correlation_methods[method[method_field]](methods[attribute_analysis_field])
+        
         elif method[method_field] in regression:
-            print("Regression method")
-            # Call the appropriate regression method here
-            pass
+            y = df[method[attribute_analysis_field].first()]
+            X = df[method[attribute_analysis_field].drop(method[attribute_analysis_field].first())]
+            return clustering[method[method_field]](X, y)
         else:
             return "Method not found"
