@@ -1,11 +1,13 @@
-import {BubblePlot, DensityScatterPlot, FunnelPlot, GroupedBarPlot, Heatmap, ScatterPlot, StackedBarPlot, StandardBarPlot, StandardHistogramPlot, StandardPiePlot, ViolinPlot, Scatter3DPlot} from "@/components/charts/Chart.tsx";
 import DataTable from "@/components/descriptiveView/DataTable";
 import { useEffect } from "react";
-import {ChartInterfaceClustering} from "@/type/chart.ts";
 import {useSelector} from "react-redux";
 import store, {RootState} from "@/store/store.ts";
-import {fetchUploadCluster, fetchUploadCorrelation, fetchUploadRegression} from "@/store/statisticsSlice.ts";
-import Hint from "@/components/Hint.tsx";
+import {
+    fetchUploadCluster,
+    fetchUploadCorrelation,
+    fetchUploadRegression,
+    updateError
+} from "@/store/statisticsSlice.ts";
 import DefinedChart from "@/components/DefinedChart.tsx";
 
 // function transformClusters({data}: ChartInterfaceClustering) {
@@ -18,6 +20,7 @@ import DefinedChart from "@/components/DefinedChart.tsx";
 
 function VisualizationDatasetsPage() {
     const charts = useSelector((state: RootState) => state.chartsData.statistics.charts);
+    const descriptive = useSelector((state: RootState) => state.chartsData.statistics.descriptiveStatistics);
     useEffect(() => {
         const getCharts = async () => {
             await store.dispatch(fetchUploadCluster())
@@ -25,19 +28,23 @@ function VisualizationDatasetsPage() {
             await store.dispatch(fetchUploadCorrelation())
         }
         try {
-            getCharts()
+            if(!charts.length) {
+                getCharts()
+            }
         } catch (error) {
             console.error((error as Error).message)
+            store.dispatch(updateError(null))
         }
     }, []);
      return (
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">VisualizationDatasetsPage</h1>
-             <DataTable/>
-             <div className="relative w-[50%] h-24"><Hint/></div>
+             <div className="w-full gap-4 flex justify-between items-start">
+                 {descriptive && <DataTable/>}
+             </div>
              {
                  charts.length > 0 && charts.map((chart, idx) => (
-                     <div key={idx} className = "relative">
+                     <div key={idx} className = "w-fit relative">
                          <DefinedChart chart={chart} key={idx} />
                      </div>
                  ))

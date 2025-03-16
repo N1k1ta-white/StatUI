@@ -17,15 +17,16 @@ const generatePrompt = ({mappedData, metaData} : Props): string => {
 
     // Пример структуры промпта:
     return `
-        Пожалуйста, объясни график. Вот подробности:
-        - Тип графика: ${type}
-        - Название графика: ${name}
-        - Описание графика: ${description}
-        - Данные для графика: ${JSON.stringify(mappedData)}
+        Please explain the chart. Here are the details:
+        - Chart type: ${type}
+        - Chart name: ${name}
+        - Chart description: ${description}
+        - Chart data: ${JSON.stringify(mappedData)}
 
-        На основе этой информации, расскажи о графике, как он выглядит, что он отображает, 
-        какие закономерности или важные моменты можно выделить, исходя из данных и описания.
+        Based on this information, describe the chart, how it looks, what it represents, 
+        and highlight any patterns or important insights that can be derived from the data and description.
     `;
+
 };
 
 function Hint({mappedData, metaData}: Props) {
@@ -33,8 +34,8 @@ function Hint({mappedData, metaData}: Props) {
     const [answer, setAnswer] = useState<string | null>();
     useEffect(() => {
         const fetchAnswer = async () => {
-            //setAnswer(await chatWithLLM(generatePrompt({mappedData, metaData})))
-            setAnswer(await chatWithLLM("Привет как дела"))
+            setAnswer(await chatWithLLM(generatePrompt({mappedData, metaData})))
+            // setAnswer(await chatWithLLM("Привет как дела"))
         }
         try {
             fetchAnswer()
@@ -44,21 +45,21 @@ function Hint({mappedData, metaData}: Props) {
 
     }, [mappedData, metaData]);
     return (
-        <span className="absolute top-0 right-0">
+        <span className="absolute top-16 -right-4 z-1000">
             <span
                 onClick={() => setChat(!chat)}
                 className="block text-white text-center leading-6 relative bg-yellow-400 w-6 h-6 rounded-[50%] cursor-pointer"
             >
                 <b>?</b>
                 <div
-                    className="absolute z-10 w-96 h-96 top-0 bg-gray-200 shadow-xl rounded-lg transition-all duration-1000 ease-in-out border-[1px] border-black-400"
+                    className="absolute z-10 overflow-y-auto w-[28rem] h-96 top-0 bg-gray-200 shadow-xl rounded-lg transition-all duration-1000 ease-in-out border-[1px] border-black-400"
                     style={{
                         left: "calc(100% + 8px)",
                         transform: chat ? "translateX(0)" : "translateX(-100%)",
                         opacity: chat ? 1 : 0,
                     }}
                 >
-                        <div className="p-4">
+                        <div className="p-4 relative">
                             <h1 className="text-gray-400 mb-4 text-center text-2xl font-bold">What does it mean?</h1>
                             <div className="">
                                 {!answer && <Loader/>}
