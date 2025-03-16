@@ -20,7 +20,9 @@ class Regression:
         return X
     
     def make_flatten(self, X):
-        if len(X.shape) > 1:
+        if isinstance(X, DataFrame):
+            return X.values.flatten() if len(X.shape) > 1 else X.values
+        elif hasattr(X, 'flatten') and len(X.shape) > 1:
             return X.flatten()
         return X
 

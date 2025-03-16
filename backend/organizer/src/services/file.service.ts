@@ -65,8 +65,6 @@ export class FileService {
     }
 
     async getName(fileId: string): Promise<string> {
-        console.log('Getting file name');
-        console.log(fileId);
         const file = await this.fileRepository.findOne({ where: { id: fileId } });
         if (!file) {
             throw new BadRequestException('File not found');
