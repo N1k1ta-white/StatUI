@@ -20,26 +20,11 @@ export default function RootPage() {
                         <NavLink to="/login">Login</NavLink>
                     </div>
                 </div>
-                <div className="w-full flex gap-4 border-b-2 py-3 px-12">
-                    {links.map((link) => (
-                        <NavLink
-                            key={link.path}
-                            to={link.path}
-                            className={({isActive}) =>
-                                cn(
-                                    "text-[0.9rem]",
-                                    isActive ? "text-black font-bold" : "text-gray-500"
-                                )
-                            }
-                        >
-                            {link.label}
-                        </NavLink>
-                    ))}
-                </div>
+                
             </header>
 
             {/* Main Content */}
-            <main className="h-fit py-3 px-12">
+            <main className="h-fit">
                 <Outlet/>
                 <Loader/>
                 <ErrorToast/>
