@@ -59,6 +59,7 @@ def apply_methods(file : FileStorage, json_array):
         elif method[method_field] in regression:
             y = df[method[attribute_analysis_field].first()]
             X = df[method[attribute_analysis_field].drop(method[attribute_analysis_field].first())]
-            return clustering[method[method_field]](X, y)
+            num_dimensions = len(method[attribute_analysis_field]) - 1
+            return regression_methods[method[method_field]](X, y, num_dimensions)
         else:
             return "Method not found"

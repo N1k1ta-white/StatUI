@@ -6,11 +6,13 @@ import { FileUploadInterceptor } from './interceptors/file.interceptor';
 import { FileService } from './services/file.service';
 import { AiSuggestionService } from './services/ai-service.service';
 import { AnalysisMethod } from './interfaces/analysis-method.interface';
+import { StatisticService } from './services/statistic.service';
 @Controller()
 export class AppController {
   constructor(
     private readonly fileService: FileService,
-    private readonly aiService: AiSuggestionService
+    private readonly aiService: AiSuggestionService,
+    private readonly statisticsService: StatisticService,
   ) {}
 
   @Post('upload')
@@ -23,9 +25,27 @@ export class AppController {
     };
   }
 
-  @Get('statistic')
-  async getStatistic(@Body() data: { fileId: string, methods: AnalysisMethod[] }) {
+  @Get()
+  getHello() {
+    return this.statisticsService.getHello();
+  }
 
+  // @Get('statistic')
+  // async getStatistic(@Body() data: { fileId: string, methods: AnalysisMethod[] }) {
+
+  // }
+
+  @Post('statistic-upload')
+  async uploadFileToStatistic(@Body() data: {fileId: string}) {
+    try {
+      if (!await this.statisticsService.checkFile(data.fileId)) {
+        console.log('File not found in statistics service');
+        return await this.statisticsService.loadFile(data.fileId);
+      }
+    } catch (error) {
+      console.log('Failed to upload file to statistics service');
+      console.log(error);
+    }
   }
 
   @Get('types')

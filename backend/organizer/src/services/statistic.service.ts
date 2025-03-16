@@ -19,17 +19,25 @@ export class StatisticService {
 
     async checkFile(fileId: string) {
         const name = await this.fileService.getName(fileId);
+        console.log('Checking file in statistics service');
+
         const response = await lastValueFrom(this.httpService.get(`${this.url}/check-file/${name}`));
         const result = response.data.exists ?? false;
+
+        console.log('File exists in statistics service:', result);
+
         return result;
     }
 
     async loadFile(fileId: string) {
         const fileStream = await this.fileService.getFileStream(fileId);
         const name = await this.fileService.getName(fileId);
+
+        console.log('Uploading file to statistics service');
+        console.log(name);
         
         // Convert the ReadStream to a Buffer and then create a Blob
-        const chunks = [];
+        const chunks: Buffer[] = [];
         for await (const chunk of fileStream) {
             chunks.push(chunk);
         }
@@ -41,7 +49,7 @@ export class StatisticService {
         formData.append('name', name);
             
         const res = await lastValueFrom(
-            this.httpService.post(`${this.url}/upload`, formData, {
+            this.httpService.post(`${this.url}/upload-file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

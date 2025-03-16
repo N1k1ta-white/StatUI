@@ -17,7 +17,7 @@ export class FileService {
         return process.env.FILE_STORAGE_PATH + '/' + fileName;
     }
 
-    async getFileStream(fileId: string): Promise<ReadStream}> {
+    async getFileStream(fileId: string): Promise<ReadStream> {
         const file = await this.fileRepository.findOne({ where: { id: fileId } });
         if (!file) {
             throw new BadRequestException('File not found');
@@ -31,11 +31,7 @@ export class FileService {
             }
             
             const stream = createReadStream(filePath);
-            return { 
-                stream, 
-                mimeType: file.mimeType, 
-                fileName: file.originalName 
-            };
+            return stream;
         } catch (error) {
             throw new BadRequestException(`Failed to read file: ${error.message}`);
         }
@@ -69,6 +65,8 @@ export class FileService {
     }
 
     async getName(fileId: string): Promise<string> {
+        console.log('Getting file name');
+        console.log(fileId);
         const file = await this.fileRepository.findOne({ where: { id: fileId } });
         if (!file) {
             throw new BadRequestException('File not found');

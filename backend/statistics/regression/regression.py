@@ -12,20 +12,20 @@ class Regression:
     def __init__(self):
         pass
 
-    def reduce_dimensions(self, X: DataFrame, n_components=1):
+    def reduce_dimensions(self, X: DataFrame, n_components):
         """Reduce the dimensionality of the data using PCA"""
-        if (X.ndim > n_components):
+        if (n_components > 1):
             svd = TruncatedSVD(n_components=1)
             return svd.fit_transform(X)
         return X
 
 
-    def linear_regression(self, X: DataFrame, y: Series):
+    def linear_regression(self, X: DataFrame, y: Series, n_components):
         """Simple linear regression for DataFrame input"""
         model = LinearRegression()
         model.fit(X, y)
 
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
@@ -39,12 +39,12 @@ class Regression:
             },
         }
 
-    def multiple_regression(self, X: DataFrame, y: Series):
+    def multiple_regression(self, X: DataFrame, y: Series, n_components):
         """Multiple regression with multiple independent variables"""
         model = LinearRegression()
         model.fit(X, y)
 
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
@@ -58,11 +58,11 @@ class Regression:
             },
         }
 
-    def logistic_regression(self, X: DataFrame, y: Series):
+    def logistic_regression(self, X: DataFrame, y: Series, n_components):
         """Logistic regression for binary classification"""
         model = LogisticRegression(random_state=42)
         model.fit(X, y)
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
 
         return {
             'Y': y.name,
@@ -77,7 +77,7 @@ class Regression:
             },
         }
 
-    def polynomial_regression(self, X: DataFrame, y: Series, degree=2):
+    def polynomial_regression(self, X: DataFrame, y: Series, n_components, degree=2):
         """Polynomial regression"""
         model = make_pipeline(
             PolynomialFeatures(degree),
@@ -85,7 +85,7 @@ class Regression:
         )
         model.fit(X, y)
 
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
@@ -98,12 +98,12 @@ class Regression:
                 'y': model.predict(X).tolist()
             },
         }
-    def ridge_regression(self, X: DataFrame, y: Series, alpha=1.0):
+    def ridge_regression(self, X: DataFrame, y: Series, n_components, alpha=1.0):
         """Ridge regression with L2 regularization"""
         model = Ridge(alpha=alpha)
         model.fit(X, y)
 
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
@@ -117,12 +117,12 @@ class Regression:
             },
         }
 
-    def lasso_regression(self, X: DataFrame, y: Series, alpha=1.0):
+    def lasso_regression(self, X: DataFrame, y: Series, n_components, alpha=1.0):
         """Lasso regression with L1 regularization"""
         model = Lasso(alpha=alpha)
         model.fit(X, y)
 
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
@@ -136,13 +136,13 @@ class Regression:
             },
         }
 
-    def probit_regression(self, X: DataFrame, y: Series):
+    def probit_regression(self, X: DataFrame, y: Series, n_components):
         """Probit regression"""
         X = sm.add_constant(X)
         model = Probit(y, X)
         result = model.fit()
 
-        X_reduced = self.reduce_dimensions(X)
+        X_reduced = self.reduce_dimensions(X, n_components)
         return {
             'Y': y.name,
             'X': X.columns.tolist(),

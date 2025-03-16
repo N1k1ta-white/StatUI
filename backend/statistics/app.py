@@ -22,15 +22,14 @@ clustering = Clustering()
 regression = Regression()
 correlation = Correlation()
 
-@app.route("/check-file/:name", methods=["GET"])
-def isExistsFile():
-    fileName = request.args.get("name")
-    check_file(fileName)
+@app.route("/check-file/<name>", methods=["GET"])
+def isExistsFile(name):
+    return check_file(name)
 
 @app.route("/upload-file", methods=["POST"])
 def uploadFile():
     file: FileStorage = request.files["file"]
-    upload_file(file.filename)
+    return upload_file(file)
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
@@ -42,7 +41,7 @@ def descriptiveStatistics():
 @app.route("/graphics", methods=["POST"])
 def graphics():
     file: FileStorage = request.files["file"]
-    df : DataFrame = file.read()
+    df : DataFrame = read_csv()
     graphics = getGraphics(df)
     return graphics
 
@@ -69,7 +68,7 @@ def get_correlation():
         "description": "The correlation matrix is visualized in this plot.",
         "data": {
             "correlationMatrix": correlation_matrix.values.tolist(),
-            "values": correlation_matrix.columns.tolist
+            "values": correlation_matrix.columns.tolist()
         }
     }
 
