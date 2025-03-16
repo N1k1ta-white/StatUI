@@ -6,8 +6,7 @@ from werkzeug.datastructures import FileStorage
 from pandas import DataFrame
 
 def getDescriptiveStatistics(df: DataFrame):
-    prompt = selectMetricsPrompt(df)
-    return OPEN_AI_CLIENT.generate_response(prompt)
+    return df.describe().to_dict()
 
 def getGraphics(df: DataFrame):
     prompt = generateGraphicsPrompt(df)

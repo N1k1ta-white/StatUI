@@ -39,12 +39,12 @@ def analyze_dataset(name):
     df = read_csv(file)
     return { "analysis": apply_methods(df, json_data), "descriptive": getDescriptiveStatistics(df) }
     
-@app.route("/descriptive", methods=["POST", "OPTIONS"])
-def descriptiveStatistics():
-    file: FileStorage = request.files["file"]
-    df : DataFrame = read_csv(file)
-    statistics = getDescriptiveStatistics(df)
-    return statistics
+@app.route("/descriptive/<name>", methods=["POST", "OPTIONS"])
+def descriptiveStatistics(name):
+    json_data = request.get_json()
+    file = get_file(name)
+    df = read_csv(file)
+    return df.describe().to_dict()
 
 @app.route("/graphics", methods=["POST"])
 def graphics():
