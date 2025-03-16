@@ -38,8 +38,8 @@ export const fetchUploadFile = createAsyncThunk<
         try {
             const formData = new FormData();
             formData.append('file', contextData.file!);
-            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
-            // formData.append('notes', contextData.notes);
+            formData.append('inputValues', JSON.stringify(contextData.inputValues));
+            formData.append('notes', contextData.notes);
             const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/api/upload`;
             return await fetchFormDataAuth<{ id: string, originalName: string }>(query, {
                 method: 'POST',
@@ -75,10 +75,9 @@ export const fetchUploadSuggestedCharts = createAsyncThunk<ChartBase[], void, { 
             const fileId = state.chartsData.statistics.fileId
             if(!fileId)
                 throw Error('No file provided');
-            const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/api/suggest`;
+            const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/api/suggest/${fileId}`;
             return await fetchData<ChartBase[]>(query, {
                 method: 'GET',
-                body: JSON.stringify(fileId)
             });
         } catch (error) {
             throw new Error((error as Error).message);

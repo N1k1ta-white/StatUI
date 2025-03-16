@@ -1,5 +1,5 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { Express } from 'express';
+import { BadRequestException, Body, Controller, Get, Param, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Express, Response } from 'express';
 import { FileUploadInterceptor } from './interceptors/file.interceptor';
 import { FileService } from './services/file.service';
 import { AiSuggestionService } from './services/ai-service.service';
@@ -38,13 +38,13 @@ export class AppController {
   }
 
   @Get('descriptive/:fileId')
-  async getDescriptiveStatistics(@Param('fileId') fileId: string) {
-    return this.statisticsService.getDescriptiveStatistics(fileId);
+  async getDescriptiveStatistics(@Param('fileId') fileId: string, @Res() res: Response) {
+    return res.json(await this.statisticsService.getDescriptiveStatistics(fileId));
   }
 
-  @Get('suggest')
-  async suggestAnalysisMethods(@Body() data : { fileId: string } ) {
-    return this.aiService.suggestAnalysisMethods(data.fileId);
+  @Get('suggest/:fileId')
+  async suggestAnalysisMethods (@Param('fileId') fileId: string) {
+    return this.aiService.suggestAnalysisMethods(fileId);
   }
 }
 

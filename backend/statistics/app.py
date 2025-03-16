@@ -10,6 +10,7 @@ from clustering.clustering import Clustering
 from correlation.correlation import Correlation
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
 from methodsHandler import apply_methods
+import numpy as np
 
 load_dotenv()
 
@@ -36,6 +37,7 @@ def uploadFile():
 def analyze_dataset(name):
     json_data = request.get_json()
     file = get_file(name)
+    print(name)
     df = read_csv(file)
     return { "analysis": apply_methods(df, json_data) }
     
@@ -43,6 +45,14 @@ def analyze_dataset(name):
 def descriptiveStatistics(name):
     file = get_file(name)
     df = read_csv(file)
+    # Replace infinity values with NaN
+    df = df.replace([np.inf, -np.inf], np.nan)
+
+    # Option 1: Drop rows with NaN values
+    df = df.dropna()
+
+    # Or Option 2: Fill NaN values with a specific value (e.g., 0)
+    # df = df.fillna(0)
     return df.describe().to_dict()
 
 @app.route("/graphics", methods=["POST"])
