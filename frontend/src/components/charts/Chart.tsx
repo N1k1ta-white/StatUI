@@ -320,8 +320,8 @@ export function DensityScatterPlot({mappedData,metaData}: DensityPlotProps) {
             layout={{
                 title: { text: mappedData.title },
                 showlegend: false,
-                autosize: false,
-                width: 600,
+                autosize: true,
+                width: 500,
                 height: 550,
                 margin: { t: 50 },
                 hovermode: "closest",
@@ -357,47 +357,48 @@ export function Scatter3DPlot({ csvUrl, title }: { csvUrl: string; title: string
 
     useEffect(() => {
         async function fetchData() {
+
             const response = await fetch(csvUrl);
             const text = await response.text();
             const rows = text.split("\n").map((row) => row.split(","));
             const headers = rows[0];
             const unpack = (key: string) => rows.slice(1).map((row) => parseFloat(row[headers.indexOf(key)]));
 
-            const trace1 = {
+            const code = {
                 x: unpack("x1"),
                 y: unpack("y1"),
                 z: unpack("z1"),
-                mode: "markers",
+                mode: "lines+markers",
                 marker: {
                     size: 8,
                     line: {
                         color: "rgba(217, 217, 217, 0.14)",
-                        width: 0.5,
+                        width: 0.2,
                     },
                     opacity: 0.8,
                 },
                 type: "scatter3d",
             };
 
-            const trace2 = {
+            const science = {
                 x: unpack("x2"),
                 y: unpack("y2"),
                 z: unpack("z2"),
-                mode: "markers",
+                mode: "",
                 marker: {
                     color: "rgb(127, 127, 127)",
                     size: 8,
                     symbol: "circle",
                     line: {
                         color: "rgb(204, 204, 204)",
-                        width: 1,
+                        width: 0.8,
                     },
                     opacity: 0.8,
                 },
                 type: "scatter3d",
             };
 
-            setData([trace1, trace2]);
+            setData([code, science]);
         }
 
         fetchData();
@@ -405,7 +406,7 @@ export function Scatter3DPlot({ csvUrl, title }: { csvUrl: string; title: string
 
     const layout = {
         title: { text: title },
-        margin: { l: 1, r: 2, b: 1, t: 0 },
+        margin: { l: 0, r: 0, b: 0, t: 0 },
     };
 
     return <Plot data={data} layout={layout} />;
