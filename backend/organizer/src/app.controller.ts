@@ -43,8 +43,8 @@ export class AppController {
   }
 
   @Get('suggest')
-  async suggestAnalysisMethods(@Body() data : { fileId: string, notes: string } ): Promise<AnalysisMethod[]> {
-    return this.aiService.suggestAnalysisMethods(data.fileId, data.notes);
+  async suggestAnalysisMethods(@Body() data : { fileId: string, notes: string } ) {
+    return await this.aiService.suggestAnalysisMethods(data.fileId, data.notes);
   }
 }
 

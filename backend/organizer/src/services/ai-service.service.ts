@@ -22,7 +22,7 @@ export class AiSuggestionService {
       }));
     
     @Get('suggest')
-    async suggestAnalysisMethods(@Body() fileId: string, notes: string ): Promise<AnalysisMethod[]> {
+    async suggestAnalysisMethods(@Body() fileId: string, notes: string ) {
         const extractedTypes = await this.fileService.extractTypes(fileId);
         const prompt = createPrompt(notes, extractedTypes);
         console.log('Prompt:', prompt);
@@ -47,6 +47,6 @@ export class AiSuggestionService {
         }
 
         this.statisticService.submitFileToStatistics(fileId);
-        return this.statisticService.sendAnalysisRequest(fileId, methods);
+        return await this.statisticService.sendAnalysisRequest(fileId, methods);
     }
 }

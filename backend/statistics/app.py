@@ -39,7 +39,7 @@ def analyze_dataset(name):
     df = read_csv(file)
     return { "analysis": apply_methods(df, json_data) }
     
-@app.route("/descriptive/<name>", methods=["POST", "OPTIONS"])
+@app.route("/descriptive/<name>", methods=["GET"])
 def descriptiveStatistics(name):
     file = get_file(name)
     df = read_csv(file)
