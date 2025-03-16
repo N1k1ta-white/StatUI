@@ -86,25 +86,23 @@ export const fetchUploadSuggestedCharts = createAsyncThunk<ChartBase[], void, { 
 )
 
 export const fetchAnalysisMethod = createAsyncThunk<
-    ChartBase,
-    {
-        methods: string[]
-        attributes_analysis: string[];
-        notes: string;
-    },
+    ChartBase[],
+    { [p: string]: string[] },
     { state: RootState }
 >(
 'chartSlice/fetchAnalysisMethod',
 async (methodData,{getState}) => {
     try {
         const state = getState();
+        const methods = Object.keys(methodData);
+        const attributes_analysis = Object.values(methodData);
         const query = `${import.meta.env.VITE_API_ORGANIZER_URL}/statistic`;//TODO: change to analysis method
-        return await fetchData<ChartBase>(query, {
+        return await fetchData<ChartBase[]>(query, {
             method: 'POST',
             body:JSON.stringify( {
                 fileId: state.chartsData.statistics.fileId,
-                methods: JSON.stringify(methodData.methods),
-                attributes_analysis: methodData.attributes_analysis,
+                methods,
+                attributes_analysis,
             })
         });
     } catch (error) {
@@ -185,7 +183,7 @@ const statisticsSlice = createSlice({
         .addCase(fetchAnalysisMethod.fulfilled,(state,action)=> {
             state.loading = false;
             state.error = null;
-            state.statistics.charts.push(action.payload);
+            state.statistics.charts = [...state.statistics.charts, ...action.payload];
 
         })
         .addCase(fetchAnalysisMethod.rejected,(state, action)=> {

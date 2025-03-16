@@ -4,6 +4,7 @@ import store, {RootState} from "@/store/store.ts";
 import { fetchUploadStatistics, fetchUploadSuggestedCharts } from "@/store/statisticsSlice.ts";
 import DefinedChart from "@/components/DefinedChart.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import MethodSelection from "@/components/descriptiveView/MethodSuggestion.tsx";
 
 // function transformClusters({data}: ChartInterfaceClustering) {
 //     return Object.values(data).map(cluster => ({
@@ -34,13 +35,15 @@ function VisualizationDatasetsPage() {
      return (
          <div>
              <h1 className="text-xl font-bold pt-3 pb-3 text-left ">Visualization Datasets Page</h1>
-             <div className="w-full gap-4 flex justify-start items-center">
+             <div className="w-full gap-4 flex justify-start items-center mb-4">
                  <Button onClick={handleGetDescriptiveStatistics}>Upload Descriptive Statistics</Button>
                  <Button onClick={handleGeSuggestedCharts}>Upload Suggested Charts</Button>
              </div>
              <div className="w-full gap-4 flex justify-between items-start">
-                 {/*<MethodSelection/>*/}
-                 {descriptive && <DataTable/>}
+                 {descriptive && <>
+                     <MethodSelection/>
+                     <DataTable/>
+                 </>}
              </div>
              {
                  charts.length > 0 && charts.map((chart, idx) => (

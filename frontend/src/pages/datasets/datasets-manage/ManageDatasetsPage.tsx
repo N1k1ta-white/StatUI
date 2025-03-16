@@ -24,7 +24,7 @@ function ManageDatasetsPage() {
     const sendData = async () => {
         try {
             await store.dispatch(fetchUploadFile({file, inputValues, notes})).unwrap()
-            // navigate("/datasets/visualisation");
+            navigate("/datasets/visualisation");
         } catch (error) {
             console.log((error as Error).message);
             store.dispatch(updateError(null))
