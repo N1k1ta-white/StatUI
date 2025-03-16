@@ -9,7 +9,7 @@ from regression.regression import Regression
 from clustering.clustering import Clustering
 from correlation.correlation import Correlation
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
-from methodsHandler import MethodHandler
+from methodsHandler import apply_methods
 
 load_dotenv()
 
@@ -22,7 +22,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 clustering = Clustering()
 regression = Regression()
 correlation = Correlation()
-methodHandler = MethodHandler()
 
 @app.route("/check-file/<name>", methods=["GET"])
 def isExistsFile(name):
@@ -34,13 +33,13 @@ def uploadFile():
     return upload_file(file)
 
 @app.route("/analyze/<name>", methods=["POST"])
-def get_regression():
+def analyze_dataset():
     json = request.json
     file = get_file(request.view_args['name'])
     df = read_csv(file)
     print(df)
     return {"ok": "ok"}
-    return methodHandler.apply_methods(df, json)
+    return apply_methods(df, json)
     
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
