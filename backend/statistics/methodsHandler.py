@@ -31,7 +31,7 @@ expected_results_field = 2
 
 def parse_analysis_method(item):
     method = item["method"]
-    attribute_analysis = item["attribute_analysis"]
+    attribute_analysis = item["attributes_analysis"]
     expected_results = item.get("expected_results", None)
     return (method, attribute_analysis, expected_results)
 

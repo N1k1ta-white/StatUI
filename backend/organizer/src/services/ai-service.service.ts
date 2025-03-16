@@ -4,41 +4,23 @@ import { chatWithLLM } from 'src/util/chatWithLLM';
 import { createPrompt } from 'src/util/createPrompt';
 import { FileService } from './file.service';
 import { AnalysisMethod } from 'src/interfaces/analysis-method.interface';
+import { z } from 'zod';
+import { StatisticService } from './statistic.service';
 
 @Injectable()
 export class AiSuggestionService {
 
     constructor(
-        private readonly fileService: FileService
+        private readonly fileService: FileService,
+        private readonly statisticService: StatisticService,
     ) {}
 
-    private readonly suggestionFormat = {
-        "type": "json_schema",
-        "json_schema": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "method": { 
-                        "type": "string", 
-                        "description": "Name of the analysis method" 
-                    },
-                    "attributes_analysis": { 
-                        "type": "array",
-                        "items": { "type": "string" },
-                        "description": "Attributes to be analyzed" 
-                    },
-                    "expected_results": { 
-                        "type": "array",
-                        "items": { "type": "string" },
-                        "description": "Expected results from the analysis" 
-                    }
-                },
-                "required": ["method", "attributes_analysis", "expected_results"]
-            }
-        }
-    }
-
+    private readonly analysis = z.array(z.object({
+        method: z.string(),
+        attributes_analysis: z.array(z.string()),
+        expected_results: z.string(), 
+      }));
+    
     @Get('suggest')
     async suggestAnalysisMethods(@Body() fileId: string, notes: string ): Promise<AnalysisMethod[]> {
         const extractedTypes = await this.fileService.extractTypes(fileId);
@@ -51,7 +33,7 @@ export class AiSuggestionService {
         
         while (attempt < maxAttempts) {
             try {
-                const response = await chatWithLLM(prompt);
+                const response = await chatWithLLM(prompt, this.analysis);
                 if (!response) break;
                     methods = JSON.parse(response);
                 break;
@@ -64,6 +46,7 @@ export class AiSuggestionService {
             }
         }
 
-        return methods;
+        this.statisticService.submitFileToStatistics(fileId);
+        return this.statisticService.sendAnalysisRequest(fileId, methods);
     }
 }

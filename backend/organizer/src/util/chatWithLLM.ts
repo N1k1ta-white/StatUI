@@ -8,20 +8,17 @@ const openai = new OpenAI({
   apiKey: "sk-no-key-required", // LM Studio doesn't need a key, but OpenAI SDK requires this field
 });
 
-const analysis = z.array(z.object({
-  method: z.string(),
-  attributes_analysis: z.array(z.string()),
-  expected_results: z.string(), 
-}));
-
-export async function chatWithLLM(message: string) {
+export async function chatWithLLM(message: string, structure: any) {
   const params: any = {
     model: "meta-llama-3.1-8b-instruct", // e.g., "mistral", "llama3"
     messages: [{ role: "system", content: "You are a helpful statistic and data science assistant." }, 
                { role: "user", content: message }],
     max_tokens: 200,
-    response_format: zodResponseFormat(analysis, "analysis_extraction"),
   };
+
+  if (structure) {
+    params.response_format = zodResponseFormat(structure, "structure_extraction")
+  }
   
   const response = await openai.chat.completions.create(params);
 
