@@ -7,6 +7,7 @@ from sklearn.decomposition import PCA
 
 class Clustering:
     def kmeans(self, df: DataFrame):
+        df = df.dropna()
         numerical_features = df.select_dtypes(include=[np.number]).columns
         numerical_data = df[numerical_features]
 
