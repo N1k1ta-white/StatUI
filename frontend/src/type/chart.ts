@@ -28,7 +28,7 @@ export interface ChartInterfaceClustering extends ChartBase {
 export interface ChartInterfaceHeatMap extends ChartBase {
     data: {
         methodName: string;
-        points: DataPointStrings[]
+        values: string[]
         matrix: number[][];
         pValues?: number[][];
     };
@@ -52,8 +52,8 @@ export interface ChartInterfaceCorrelation extends ChartBase {
 
 export interface ChartInterfaceRegression  extends ChartBase {
     data: {
-        points: DataPointNumbers[];
-        regression?: DataPointNumbers[];
+        points: {x: number[], y: number[]};
+        regressionLine: {x: number[], y: number[]};
     }
 }
 
