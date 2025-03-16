@@ -28,7 +28,7 @@ export async function fetchFormDataAuth<T>(url: string, options?: RequestInit): 
     return await fetchData(url, {
         ...options,
         headers: {
-            // 'Authorization': `Bearer ${localStorage.getItem(import.meta.env.VITE_JWT_KEY_TO_LOCAL_STORAGE ?? "")}`
+            // 'Authorization': `Bearer ${localStorage.getItem(import.meta..env.VITE_JWT_KEY_TO_LOCAL_STORAGE ?? "")}`
         }
     });
 }

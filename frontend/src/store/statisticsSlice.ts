@@ -308,7 +308,7 @@ export default statisticsSlice.reducer;
 //             formData.append('file', state.chartsData.file);
 //             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
 //             // formData.append('notes', contextData.notes);
-//             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/clustering`;
+//             const query = `${import.meta..env.VITE_API_STATISTICS_URL}/clustering`;
 //             return await fetchFormDataAuth<ChartBase>(query, {
 //                 method: 'POST',
 //                 body: formData
@@ -333,7 +333,7 @@ export default statisticsSlice.reducer;
 //             formData.append('file', state.chartsData.file);
 //             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
 //             // formData.append('notes', contextData.notes);
-//             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/correlation`;
+//             const query = `${import.meta..env.VITE_API_STATISTICS_URL}/correlation`;
 //             return await fetchFormDataAuth<ChartBase>(query, {
 //                 method: 'POST',
 //                 body: formData
@@ -358,7 +358,7 @@ export default statisticsSlice.reducer;
 //             formData.append('file', state.chartsData.file);
 //             // formData.append('inputValues', JSON.stringify(contextData.inputValues));
 //             // formData.append('notes', contextData.notes);
-//             const query = `${import.meta.env.VITE_API_STATISTICS_URL}/regression`;
+//             const query = `${import.meta..env.VITE_API_STATISTICS_URL}/regression`;
 //             return await fetchFormDataAuth<ChartBase>(query, {
 //                 method: 'POST',
 //                 body: formData
