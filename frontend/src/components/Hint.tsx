@@ -15,13 +15,12 @@ const generatePrompt = ({mappedData, metaData} : Props): string => {
 
     const { type, name, description } = metaData;
 
-    // Пример структуры промпта:
+ 
     return `
         Please explain the chart. Here are the details:
         - Chart type: ${type}
         - Chart name: ${name}
         - Chart description: ${description}
-        - Chart data: ${JSON.stringify(mappedData)}
 
         Based on this information, describe the chart, how it looks, what it represents, 
         and highlight any patterns or important insights that can be derived from the data and description.
