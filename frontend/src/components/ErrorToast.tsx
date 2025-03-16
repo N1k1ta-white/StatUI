@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store.ts";
 
 import { Toaster } from "@/components/ui/sonner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 const ErrorToast: React.FC = () => {
@@ -26,7 +26,7 @@ const ErrorToast: React.FC = () => {
                     border: "1px solid #f5c6cb",
                 },
             });
-           ;        }
+        }
     }, [error]);
 
     return <Toaster />;

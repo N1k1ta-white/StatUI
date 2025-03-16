@@ -70,6 +70,23 @@ export const fetchUploadCluster = createAsyncThunk<
     }
 )
 
+export const fetchUploadCorelation = createAsyncThunk<
+    ChartBase,
+    void,
+    { state: RootState }
+>(
+    'chartSlice/fetchUploadCorelation',
+    async (_, { getState }) => {
+        try {
+            const state = getState();
+            if(!state.chartsData.file) throw Error('No file provided');
+            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/${state.chartsData.statistics.fileId}/corelation`;
+            return await fetchFormDataAuth<ChartBase>(query);
+        } catch (error) {
+            throw new Error((error as Error).message);
+        }
+    }
+)
 
 
 

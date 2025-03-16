@@ -1,82 +1,131 @@
+import { ChartBase } from "@/type/chart";
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
+
+interface HeatMapProps {
+    mappedData:{
+        z: number[][];
+        values: string[]
+        title:string;
+    }
+    metaData:ChartBase;
+}
 // Heatmap Component
-export function Heatmap({ z, values_x,values_y, title }: { z: number[][]; values_x: string[];values_y: string[]; title: string }) {
+export function Heatmap({ mappedData,metaData }: HeatMapProps) {
     return (
-        <Plot
-            data={[
-                {
-                    z,
-                    x: values_x,
-                    y: values_y,
-                    type: "heatmap",
-                    colorscale: "Viridis",
-                },
-            ]}
-            layout={{ title: { text: title } }}
-        />
+
+            <Plot
+                data={[
+                    {
+                        z: mappedData.z,
+                        x: mappedData.values,
+                        type: "heatmap",
+                        colorscale: "Viridis",
+                    },
+                ]}
+                layout={{ title: { text: mappedData.title } }}
+            />
     );
+}
+
+interface StandardHistogramProps {
+    mappedData:{
+        x: number[];
+        title:string;
+    }
+    metaData:ChartBase;
 }
 
 // Histogram Component
-export function StandardHistogramPlot({ x, title }: { x: number[];  title: string }) {
+export function StandardHistogramPlot({ mappedData,metaData }: StandardHistogramProps) {
     return (
         <Plot
             data={[
                 {
-                    x,
+                    x: mappedData.x,
                     type: "histogram",
                 },
             ]}
-            layout={{ title: { text: title } }}
+            layout={{ title: { text: mappedData.title } }}
         />
     );
 }
+interface StandardPieProps {
+    mappedData:{
+        values: number[];
+        labels: string[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
 
 // Pie Chart Component
-export function StandardPiePlot({ values, labels, title }: { values: number[]; labels: string[]; title: string }) {
+export function StandardPiePlot({ mappedData,metaData }: StandardPieProps) {
     return (
         <Plot
             data={[
                 {
-                    values,
-                    labels,
+                    values:mappedData.values,
+                    labels:mappedData.labels,
                     type: "pie",
+
                 },
             ]}
-            layout={{ title: { text: title } }}
+            layout={{ title: { text: mappedData.title } }}
         />
     );
 }
 
+
+interface ScatteredPlotProps {
+    mappedData:{
+        data: { x: number[]; y: number[]; mode: string }[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
+
+
 // Scatter Plot Component
-export function ScatterPlot({ data, title, xAxisLabel, yAxisLabel,}: {
-    data: { x: number[]; y: number[]; mode: string }[];
-    title: string;
-    xAxisLabel: string;
-    yAxisLabel: string;
-}) {
+export function ScatterPlot({ mappedData,metaData}: ScatteredPlotProps) {
     return (
         <Plot
-            data={data.map((d) => ({
+            data={mappedData.data.map((d) => ({
                 x: d.x,
                 y: d.y,
                 mode: d.mode,
                 type: "scatter",
             }))}
             layout={{
-                title: { text: title },
-                xaxis: { title: { text: xAxisLabel } }, // Label for x-axis
-                yaxis: { title: { text: yAxisLabel } }, // Label for y-axis
+                title: { text: mappedData.title },
+                xaxis: { title: "X Axis" },
+                yaxis: { title: "Y Axis" },
             }}
         />
     );
 }
 
+
+interface BarBase{
+    x: string[];
+    y: number[];
+    name:string;
+}
+
+
+interface BarPlotProps {
+    mappedData:{
+        data: BarBase[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
+
+
 // Grouped Bar Plot Component
-export function GroupedBarPlot({ data, title }: { data: { x: string[]; y: number[]; name: string }[]; title: string }) {
-    const plotData = Array.isArray(data) ? data : [];
+export function GroupedBarPlot({ mappedData,metaData}: BarPlotProps) {
+    const plotData = Array.isArray(mappedData.data) ? mappedData.data : [];
 
     return (
         <Plot
@@ -86,14 +135,14 @@ export function GroupedBarPlot({ data, title }: { data: { x: string[]; y: number
                 name: d.name,
                 type: "bar",
             }))}
-            layout={{ title: { text: title }}}
+            layout={{ title: { text: mappedData.title }}}
         />
     );
 }
 
 // Stacked Bar Plot Component
-export function StackedBarPlot({ data, title }: { data: { x: string[]; y: number[]; name: string }[]; title: string }) {
-    const plotData = Array.isArray(data) ? data : [];
+export function StackedBarPlot({ mappedData,metaData}: BarPlotProps) {
+    const plotData = Array.isArray(mappedData.data) ? mappedData.data : [];
 
     return (
         <Plot
@@ -103,35 +152,43 @@ export function StackedBarPlot({ data, title }: { data: { x: string[]; y: number
                 name: d.name,
                 type: "bar",
             }))}
-            layout={{ title: { text: title }, barmode: "stack" }}
+            layout={{ title: { text: mappedData.title }, barmode: "stack" }}
         />
     );
 }
 
 // Standard Bar Plot Component
-export function StandardBarPlot({ x, y, title }: { x: string[]; y: number[]; title: string }) {
+export function StandardBarPlot({ mappedData, metaData }: { mappedData: BarBase; metaData: ChartBase }) {
     return (
         <Plot
             data={[
                 {
-                    x,
-                    y,
+                    x: mappedData.x,
+                    y: mappedData.y,
                     type: "bar",
                 },
             ]}
-            layout={{ title: { text: title }, yaxis: { title: "Values" } }}
+            layout={{ title: { text: mappedData.name } }}
         />
     );
 }
 
+
+interface ViolinPlotProps {
+    mappedData:{
+        y: number[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
 // Violin Plot Component
-export function ViolinPlot({ y, title }: { y: number[]; title: string }) {
+export function ViolinPlot({ mappedData,metaData}: ViolinPlotProps ) {
     return (
         <Plot
             data={[
                 {
                     type: "violin",
-                    y,
+                    y: mappedData.y,
                     box: { visible: true },
                     meanline: { visible: true },
                     points: "all",
@@ -139,24 +196,33 @@ export function ViolinPlot({ y, title }: { y: number[]; title: string }) {
                     marker: { color: "blue" },
                 },
             ]}
-            layout={{ title: { text: title }, yaxis: { title: "Values" } }}
+            layout={{ title: { text: mappedData.title } }}
         />
     );
 }
 
+
+interface FunnelPlotProps {
+    mappedData:{
+        x: number[];
+        y: string[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
 // Funnel Plot Component
-export function FunnelPlot({ x, y, title }: { x: number[]; y: string[]; title: string }) {
+export function FunnelPlot({ mappedData,metaData}: FunnelPlotProps) {
     return (
         <Plot
             data={[
                 {
                     type: "funnel",
-                    x,
-                    y,
+                    x: mappedData.x,
+                    y: mappedData.y,
                 },
             ]}
             layout={{
-                title: { text: title },
+                title: { text: mappedData.title },
                 margin: { l: 150 },
                 width: 600,
                 height: 500,
@@ -165,22 +231,32 @@ export function FunnelPlot({ x, y, title }: { x: number[]; y: string[]; title: s
     );
 }
 
+interface BubblePlotProps {
+    mappedData:{
+        x: number[];
+        y: number[];
+        sizes: number[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
+
 // Bubble Plot Component
-export function BubblePlot({ x, y, sizes, title }: { x: number[]; y: number[]; sizes: number[]; title: string }) {
+export function BubblePlot({ mappedData,metaData}: BubblePlotProps) {
     return (
         <Plot
             data={[
                 {
-                    x,
-                    y,
+                    x: mappedData.x,
+                    y: mappedData.y,
                     mode: "markers",
                     marker: {
-                        size: sizes,
+                        size: mappedData.sizes,
                     },
                 },
             ]}
             layout={{
-                title: { text: title },
+                title: { text: mappedData.title },
                 showlegend: true,
                 height: 600,
                 width: 600,
@@ -189,21 +265,24 @@ export function BubblePlot({ x, y, sizes, title }: { x: number[]; y: number[]; s
     );
 }
 
-export function DensityScatterPlot({
-    x,
-    y,
-    title,
-}: {
-    x: number[];
-    y: number[];
-    title: string;
-}) {
+
+interface DensityPlotProps {
+    mappedData:{
+        x: number[];
+        y: number[];
+        title:string;
+    }
+    metaData:ChartBase;
+}
+
+
+export function DensityScatterPlot({mappedData,metaData}: DensityPlotProps) {
     return (
         <Plot
             data={[
                 {
-                    x,
-                    y,
+                    x: mappedData.x,
+                    y: mappedData.y,
                     mode: "markers",
                     name: "points",
                     marker: {
@@ -214,8 +293,8 @@ export function DensityScatterPlot({
                     type: "scatter",
                 },
                 {
-                    x,
-                    y,
+                    x: mappedData.x,
+                    y: mappedData.y,
                     name: "density",
                     ncontours: 20,
                     colorscale: "Hot",
@@ -224,14 +303,14 @@ export function DensityScatterPlot({
                     type: "histogram2dcontour",
                 },
                 {
-                    x,
+                    x: mappedData.x,
                     name: "x density",
                     marker: { color: "rgb(102,0,0)" },
                     yaxis: "y2",
                     type: "histogram",
                 },
                 {
-                    y,
+                    y: mappedData.y,
                     name: "y density",
                     marker: { color: "rgb(102,0,0)" },
                     xaxis: "x2",
@@ -239,7 +318,7 @@ export function DensityScatterPlot({
                 },
             ]}
             layout={{
-                title: { text: title },
+                title: { text: mappedData.title },
                 showlegend: false,
                 autosize: false,
                 width: 600,
@@ -271,6 +350,7 @@ export function DensityScatterPlot({
         />
     );
 }
+
 // 3D Scatter Plot Component for showcase only
 export function Scatter3DPlot({ csvUrl, title }: { csvUrl: string; title: string }) {
     const [data, setData] = useState<{ x: number[]; y: number[]; z: number[]; mode: string; marker: unknown; type: string }[]>([]);
