@@ -23,7 +23,7 @@ export default function DefinedChart({chart}: Props) {
                         case "heatmap": {
                             const heatmapData = chart as ChartInterfaceHeatMap;
                             const mappedData = {
-                                z: heatmapData.data.matrix || [],
+                                z: heatmapData.data.correlationMatrix || [],
                                 values: heatmapData.data.values|| [],
                                 title: heatmapData.name || "heatmap",
                             }
@@ -56,8 +56,8 @@ export default function DefinedChart({chart}: Props) {
                         }
                         case "regression": {
                             const regressionData = chart as ChartInterfaceRegression;
-                            const markers = {...regressionData.data.points,mode: 'markers'};
-                            const regression = {...regressionData.data.regressionLine,mode: 'lines'};
+                            const markers = {...regressionData.data.points, mode: 'markers'};
+                            const regression = {...regressionData.data.regression_line, mode: 'lines'};
                             // const markers = {
                             //     x: regressionData.data.points.x,
                             //     y: regressionData.data.points.y,
@@ -72,6 +72,7 @@ export default function DefinedChart({chart}: Props) {
                                 data: [markers, regression],
                                 title: regressionData.name
                             };
+                            console.log(regressionData)
 
                             return (
                                 <>

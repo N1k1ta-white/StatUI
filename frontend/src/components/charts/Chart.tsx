@@ -20,6 +20,7 @@ export function Heatmap({ mappedData,metaData }: HeatMapProps) {
                     {
                         z: mappedData.z,
                         x: mappedData.values,
+                        y: mappedData.values,
                         type: "heatmap",
                         colorscale: "Viridis",
                     },
@@ -38,7 +39,7 @@ interface StandardHistogramProps {
 }
 
 // Histogram Component
-export function StandardHistogramPlot({ mappedData,metaData }: StandardHistogramProps) {
+export function StandardHistogramPlot({ mappedData, metaData }: StandardHistogramProps) {
     return (
         <Plot
             data={[
@@ -61,7 +62,7 @@ interface StandardPieProps {
 }
 
 // Pie Chart Component
-export function StandardPiePlot({ mappedData,metaData }: StandardPieProps) {
+export function StandardPiePlot({ mappedData, metaData }: StandardPieProps) {
     return (
         <Plot
             data={[

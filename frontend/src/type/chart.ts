@@ -35,7 +35,7 @@ export interface ChartInterfaceHeatMap extends ChartBase {
     data: {
         methodName: string;
         values: string[]
-        matrix: number[][];
+        correlationMatrix: number[][];
         pValues?: number[][];
     };
 }
@@ -80,7 +80,7 @@ export interface ChartInterfaceBar extends ChartBase {
 export interface ChartInterfaceRegression  extends ChartBase {
     data: {
         points: {x: number[], y: number[]};
-        regressionLine: {x: number[], y: number[]};
+        regression_line: {x: number[], y: number[]};
     }
 }
 

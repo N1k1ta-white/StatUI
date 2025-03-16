@@ -1,4 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ChartBase, ChartInterfaceRegression, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
+import {fetchFormDataAuth} from "@/lib/fetch";
 import {ChartBase, DescriptiveStatistics, StatisticsStore} from "@/type/chart.ts";
 import {fetchData, fetchFormDataAuth} from "@/lib/fetch";
 import {RootState} from "@/store/store.ts";
