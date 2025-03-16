@@ -13,6 +13,9 @@ export class FileEntity {
     originalName: string;
 
     @Column()
+    notes: string;
+
+    @Column()
     mimeType: string;
 
     @Column()

@@ -61,7 +61,8 @@ export class StatisticService {
         try {
             const name = await this.fileService.getName(fileId);
             const response = await lastValueFrom(this.httpService.post(`${this.url}/analyze/${name}`, methods));
-            return response.data;
+            console.log(response);
+            return response;
         } catch (error) {
             throw new BadRequestException('Failed to send analysis request');
         }
@@ -71,6 +72,6 @@ export class StatisticService {
         this.submitFileToStatistics(fileId);
         const name = await this.fileService.getName(fileId);
         const response = await lastValueFrom(this.httpService.get(`${this.url}/descriptive/${name}`));
-        return response.data;
+        return response;
     }
 }

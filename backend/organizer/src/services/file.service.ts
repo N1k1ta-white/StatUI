@@ -37,13 +37,14 @@ export class FileService {
         }
     }
 
-    async saveFile(fileData: Express.Multer.File): Promise<{ file: FileEntity, originalName: string }> {
+    async saveFile(fileData: Express.Multer.File, notes: string): Promise<{ file: FileEntity, originalName: string }> {
         const uniqueName = fileData.filename;
         const file = new FileEntity();
         file.fileName = uniqueName;
         file.originalName = fileData.originalname;
         file.mimeType = fileData.mimetype;
         file.size = fileData.size;
+        file.notes = notes;
 
         try {
             file.typeOfAttributes =

@@ -16,8 +16,8 @@ export class AppController {
 
   @Post('upload')
   @UseInterceptors(FileUploadInterceptor.getInterceptor())
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    const result = await this.fileService.saveFile(file);
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() data: { notes: string }) {
+    const result = await this.fileService.saveFile(file, data.notes);
     return {
       ...result.file,
       originalName: result.originalName

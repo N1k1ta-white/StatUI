@@ -48,3 +48,12 @@ class Clustering:
         for res in result:
             result_dict.update(res)
         return result_dict
+    
+    def hierarchical(self, df: DataFrame):
+        pass
+
+    def dbscan(self, df: DataFrame):
+        pass
+
+    def gaussian_mixture_model(self, df: DataFrame):
+        pass

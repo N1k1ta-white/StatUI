@@ -2,11 +2,18 @@ import json
 from pandas import DataFrame
 from correlation.correlation import Correlation
 from regression.regression import Regression
+from clustering.clustering import Clustering
 
 correlation = Correlation()
 regression = Regression()
+clustering = Clustering()
 
-clustering = ["K-means Clustering", "Hierarchical Clustering", "DBSCAN", "Gaussian Mixture Model"]
+clustering = {
+    "K-means Clustering": clustering.kmeans, 
+    "Hierarchical Clustering": clustering.hierarchical,
+    "DBSCAN": clustering.dbscan,
+    "Gaussian Mixture Model": clustering.gaussian_mixture_model
+}
 
 correlation_methods = {
     "Pearson's Correlation Coefficient": correlation.pearson_correlation_matrix,
@@ -46,8 +53,7 @@ def apply_methods(df: DataFrame, json_array):
 
     for (method, attribute_analysis, expected_results) in methods:
         if method in clustering:
-           print("Clustering")
-           pass
+            return clustering[method](df[attribute_analysis])
         
         elif method in correlation_methods:
             # Use attribute_analysis directly, not method[attribute_analysis_field]
