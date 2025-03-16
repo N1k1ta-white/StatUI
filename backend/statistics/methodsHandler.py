@@ -42,7 +42,6 @@ def get_analysis_methods(json_array):
     return analysis_methods
 
 def apply_methods(df: DataFrame, json_array):
-    print(json_array)
     methods = get_analysis_methods(json_array)
 
     for (method, attribute_analysis, expected_results) in methods:
