@@ -62,6 +62,7 @@ def get_correlation():
     file: FileStorage = request.files["file"]
     df : DataFrame = read_csv(file)
     correlation_matrix = correlation.pearson_correlation_matrix(df)
+    print(correlation_matrix)
     return {
         "type": "heatmap",
         "name": "Pearson's Correlation Coefficient",
