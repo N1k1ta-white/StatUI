@@ -26,7 +26,7 @@ function VisualizationDatasetsPage() {
     }
     const handleGeSuggestedCharts = async () => {
         try {
-            await store.dispatch(fetchUploadCluster()).unwrap()
+            await store.dispatch(fetchUploadSuggestedCharts()).unwrap()
         } catch (error) {
             console.log((error as Error).message);
         }
