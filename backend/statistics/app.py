@@ -23,12 +23,12 @@ regression = Regression()
 correlation = Correlation()
 
 @app.route("/check-file/:name", methods=["GET"])
-def check_file():
+def isExistsFile():
     fileName = request.args.get("name")
     check_file(fileName)
 
 @app.route("/upload-file", methods=["POST"])
-def upload_file():
+def uploadFile():
     file: FileStorage = request.files["file"]
     upload_file(file.filename)
 
@@ -59,7 +59,7 @@ def createClusters():
     }
 
 @app.route("/correlation", methods=["POST"])
-def correlation():
+def get_correlation():
     file: FileStorage = request.files["file"]
     df : DataFrame = read_csv(file)
     correlation_matrix = correlation.pearson_correlation_matrix(df)
@@ -74,7 +74,7 @@ def correlation():
     }
 
 @app.route("/regression", methods=["POST"])
-def regression():
+def get_regression():
     file: FileStorage = request.files["file"]
     df : DataFrame = read_csv(file)
     y = df['Social_Media_Hours']
