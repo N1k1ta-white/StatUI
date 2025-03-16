@@ -41,7 +41,6 @@ def analyze_dataset(name):
     
 @app.route("/descriptive/<name>", methods=["POST", "OPTIONS"])
 def descriptiveStatistics(name):
-    json_data = request.get_json()
     file = get_file(name)
     df = read_csv(file)
     return df.describe().to_dict()
@@ -49,7 +48,7 @@ def descriptiveStatistics(name):
 @app.route("/graphics", methods=["POST"])
 def graphics():
     file: FileStorage = request.files["file"]
-    df : DataFrame = read_csv()
+    df : DataFrame = read_csv(file)
     graphics = getGraphics(df)
     return graphics
 

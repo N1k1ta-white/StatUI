@@ -65,6 +65,7 @@ def apply_methods(df: DataFrame, json_array):
         
         elif method in regression_methods:
             # Use attribute_analysis directly, not method[attribute_analysis_field]
+            df.dropna(inplace=True)
             y = df[attribute_analysis[0]]
             numeric_cols = [col for col in attribute_analysis[1:] if df[col].dtype.kind in 'ifc']
             X = df[numeric_cols]
