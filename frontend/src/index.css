@@ -119,3 +119,42 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}
+
+.typewriter p {
+  overflow: hidden; /* Скрываем текст, который еще не появился */
+  border-right: 2px solid orange; /* Эффект курсора */
+  margin: 0 auto;
+  letter-spacing: 0.15em; /* Расстояние между буквами */
+  animation:
+          typing 6s steps(40, end), /* Анимация печатания */
+          blink-caret 0.75s step-end infinite; /* Анимация мигающего курсора */
+  white-space: pre-wrap; /* Разрешаем перенос текста на новую строку */
+  word-wrap: break-word; /* Перенос слов, если они не помещаются */
+}
