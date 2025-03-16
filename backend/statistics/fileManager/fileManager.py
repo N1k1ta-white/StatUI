@@ -24,3 +24,10 @@ def upload_file(file):
         return jsonify({'message': 'File uploaded successfully'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+def get_file(filename):
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+    if os.path.exists(file_path):
+        return file_path
+    else:
+        return None

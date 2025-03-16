@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Get, HttpCode, Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { FileService } from './file.service';
+import { AnalysisMethod } from 'src/interfaces/analysis-method.interface';
 
 @Injectable()
 export class StatisticService {
@@ -11,11 +12,6 @@ export class StatisticService {
         private readonly httpService: HttpService,
         private readonly fileService: FileService
     ) {}
-    
-    async getHello() {
-        const response = await lastValueFrom(this.httpService.get(this.url));
-        console.log(response.data);
-    }
 
     async checkFile(fileId: string) {
         const name = await this.fileService.getName(fileId);
@@ -58,6 +54,16 @@ export class StatisticService {
             }
         } catch (error) {
             throw new BadRequestException('Failed to upload file to statistics service');
+        }
+    }
+
+    async sendAnalysisRequest(fileId: string, methods: AnalysisMethod[]) {
+        try {
+            const name = await this.fileService.getName(fileId);
+            const response = await lastValueFrom(this.httpService.post(`${this.url}/analyze/${name}`, methods));
+            return response.data;
+        } catch (error) {
+            throw new BadRequestException('Failed to send analysis request');
         }
     }
     

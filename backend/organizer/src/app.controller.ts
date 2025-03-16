@@ -24,16 +24,11 @@ export class AppController {
     };
   }
 
-  @Get()
-  getHello() {
-    return this.statisticsService.getHello();
-  }
-
   @Get('statistic')
   async getStatistic(@Body() data: { fileId: string, methods: AnalysisMethod[] }) {
-    
-  }
+    await this.statisticsService.checkFile(data.fileId);
 
+  }
 
   @Get('types')
   async extractTypes(@Body() data: { fileId: string }) {

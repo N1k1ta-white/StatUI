@@ -3,12 +3,13 @@ from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
 from werkzeug.datastructures import FileStorage
 from pandas import DataFrame, read_csv
-from fileManager.fileManager import check_file, upload_file
+from fileManager.fileManager import check_file, upload_file, get_file
 
 from regression.regression import Regression
 from clustering.clustering import Clustering
 from correlation.correlation import Correlation
 from descriptive.descriptive import getDescriptiveStatistics, getGraphics
+from methodsHandler import MethodHandler
 
 load_dotenv()
 
@@ -21,6 +22,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 clustering = Clustering()
 regression = Regression()
 correlation = Correlation()
+methodHandler = MethodHandler()
 
 @app.route("/check-file/<name>", methods=["GET"])
 def isExistsFile(name):
@@ -30,6 +32,16 @@ def isExistsFile(name):
 def uploadFile():
     file: FileStorage = request.files["file"]
     return upload_file(file)
+
+@app.route("/analyze/<name>", methods=["POST"])
+def get_regression():
+    json = request.json
+    file = get_file(request.view_args['name'])
+    df = read_csv(file)
+    print(df)
+    return {"ok": "ok"}
+    return methodHandler.apply_methods(df, json)
+    
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
@@ -78,12 +90,12 @@ def get_regression():
     file: FileStorage = request.files["file"]
     df : DataFrame = read_csv(file)
     y = df['Social_Media_Hours']
-    X = df[['Age', 'Exercise_Hours', 'Sleep_Hours']]
+    X = df[['Age']]
 
     return {
         'type': 'regression',
         'name': 'Linear Regression',
-        "data": regression.linear_regression(X, y),
+        "data": regression.linear_regression(X, y, 1),
         "description": "The dimensionality of the data has been reduced to 1D using LSA. The regression line is visualized in this plot."
     }
 
