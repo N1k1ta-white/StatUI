@@ -13,6 +13,31 @@ interface AnalysisMethodRequest {
     attributes_analysis: string[],
     expected_results: string[]
 }
+export interface BarBase extends ChartBase{
+    x: string[];
+    y: number[];
+    title:string;
+}
+
+export interface FunnelPlotChartInterface extends ChartBase{
+    x: number[];
+    y: string[];
+    title:string;
+}
+export interface ViolinHistogramChartInterface extends ChartBase{
+    y: number[];
+    title:string;
+}
+
+export interface ChartInterfaceBar extends ChartBase{
+        data: BarBase[];
+        title:string;
+}
+export interface ChartInterfacePie extends ChartBase{
+        values: number[];
+        labels: string[];
+        title:string;
+}
 
 
 export interface ChartBase {
@@ -64,18 +89,6 @@ export interface ChartInterfacePie extends ChartBase {
     }
 }
 
-interface BarBase{
-    x: string[];
-    y: number[];
-    name:string;
-}
-
-export interface ChartInterfaceBar extends ChartBase {
-    data:{
-        data: BarBase[];
-        title:string;
-    }
-}
 
 export interface ChartInterfaceRegression  extends ChartBase {
     data: {
