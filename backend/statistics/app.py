@@ -50,8 +50,10 @@ def correlation():
     df : DataFrame = read_csv(file)
     correlation_matrix = correlation.pearson_correlation_matrix(df)
     return {
+        "type": "correlation",
+        "name": "Pearson's Correlation Coefficient",
+        "description": "The correlation matrix is visualized in this plot.",
         "data": {
-            "methodName": "Pearson's Correlation Coefficient",
             "correlationMatrix": correlation_matrix.values.tolist(),
             "values": correlation_matrix.columns.tolist
         }
