@@ -21,9 +21,9 @@ export class AiSuggestionService {
         expected_results: z.string(), 
       }));
     
-    @Get('suggest')
-    async suggestAnalysisMethods(@Body() fileId: string, notes: string ) {
+    async suggestAnalysisMethods(@Body() fileId: string ) {
         const extractedTypes = await this.fileService.extractTypes(fileId);
+        const notes = await this.fileService.getNotes(fileId);
         const prompt = createPrompt(notes, extractedTypes);
         console.log('Prompt:', prompt);
 

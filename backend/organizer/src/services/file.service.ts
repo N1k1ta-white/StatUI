@@ -73,4 +73,13 @@ export class FileService {
 
         return file.fileName;
     }
+
+    async getNotes(fileId: string): Promise<string> {
+        const file = await this.fileRepository.findOne({ where: { id: fileId } });
+        if (!file) {
+            throw new BadRequestException('File not found');
+        }
+
+        return file.notes;
+    }
 }
