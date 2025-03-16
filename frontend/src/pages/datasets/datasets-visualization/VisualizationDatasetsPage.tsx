@@ -1,7 +1,7 @@
 import DataTable from "@/components/descriptiveView/DataTable";
 import {useSelector} from "react-redux";
 import store, {RootState} from "@/store/store.ts";
-import { fetchUploadStatistics, fetchUploadSuggestedCharts } from "@/store/statisticsSlice.ts";
+import {fetchUploadCluster, fetchUploadStatistics, fetchUploadSuggestedCharts} from "@/store/statisticsSlice.ts";
 import DefinedChart from "@/components/DefinedChart.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import MethodSelection from "@/components/descriptiveView/MethodSuggestion.tsx";
@@ -26,7 +26,7 @@ function VisualizationDatasetsPage() {
     }
     const handleGeSuggestedCharts = async () => {
         try {
-            await store.dispatch(fetchUploadSuggestedCharts()).unwrap()
+            await store.dispatch(fetchUploadCluster()).unwrap()
         } catch (error) {
             console.log((error as Error).message);
         }

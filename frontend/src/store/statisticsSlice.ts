@@ -111,6 +111,31 @@ async (methodData,{getState}) => {
 }
 )
 
+export const fetchUploadCluster = createAsyncThunk<
+    ChartBase,
+    void,
+    { state: RootState }
+>(
+    'chartSlice/fetchUploadCluster',
+    async (_, { getState }) => {
+        try {
+            const state = getState();
+            if(!state.chartsData.file) throw Error('No file provided');
+            const formData = new FormData();
+            formData.append('file', state.chartsData.file);
+            // formData.append('inputValues', JSON.stringify(contextData.inputValues));
+            // formData.append('notes', contextData.notes);
+            const query = `${import.meta.env.VITE_API_STATISTICS_URL}/clustering`;
+            return await fetchFormDataAuth<ChartBase>(query, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (error) {
+            throw new Error((error as Error).message);
+        }
+    }
+)
+
 const statisticsSlice = createSlice({
     name: 'statisticsSlice',
     initialState,
@@ -131,6 +156,7 @@ const statisticsSlice = createSlice({
         .addCase(fetchUploadFile.fulfilled,(state,action)=> {
             state.loading = false;
             state.error = null;
+            state.statistics = initialState.statistics
             state.statistics.fileId = action.payload.id;
             state.statistics.fileName = action.payload.originalName;
             state.file = action.meta.arg.file;
@@ -140,6 +166,20 @@ const statisticsSlice = createSlice({
             state.loading = false;
             state.error = action.error.message || "Неизвестна грешка";
         })
+
+            .addCase(fetchUploadCluster.pending,(state)=> {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUploadCluster.fulfilled,(state,action)=> {
+                state.loading = false;
+                state.error = null;
+                state.statistics.charts.push(action.payload);
+            })
+            .addCase(fetchUploadCluster.rejected,(state, action)=> {
+                state.loading = false;
+                state.error = action.error.message || "Неизвестна грешка";
+            })
 
 
 
