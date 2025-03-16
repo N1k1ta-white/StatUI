@@ -18,6 +18,11 @@ class Regression:
             svd = TruncatedSVD(n_components=1)
             return svd.fit_transform(X)
         return X
+    
+    def make_flatten(self, X):
+        if len(X.shape) > 1:
+            return X.flatten()
+        return X
 
 
     def linear_regression(self, X: DataFrame, y: Series, n_components):
@@ -26,15 +31,17 @@ class Regression:
         model.fit(X, y)
 
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
+
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': model.predict(X).tolist()
             },
         }
@@ -45,15 +52,17 @@ class Regression:
         model.fit(X, y)
 
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
+
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': model.predict(X).tolist()
             },
         }
@@ -63,16 +72,17 @@ class Regression:
         model = LogisticRegression(random_state=42)
         model.fit(X, y)
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
 
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': model.predict(X).tolist()
             },
         }
@@ -86,15 +96,17 @@ class Regression:
         model.fit(X, y)
 
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
+
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': model.predict(X).tolist()
             },
         }
@@ -104,15 +116,17 @@ class Regression:
         model.fit(X, y)
 
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
+
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': model.predict(X).tolist()
             },
         }
@@ -123,15 +137,17 @@ class Regression:
         model.fit(X, y)
 
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
+
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': model.predict(X).tolist()
             },
         }
@@ -143,15 +159,17 @@ class Regression:
         result = model.fit()
 
         X_reduced = self.reduce_dimensions(X, n_components)
+        X_reduced = self.make_flatten(X_reduced)
+
         return {
             'Y': y.name,
             'X': X.columns.tolist(),
             'points': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': y.tolist()
             },
             'regression_line': {
-                'x': X_reduced.flatten().tolist(),
+                'x': X_reduced.tolist(),
                 'y': result.predict(X).tolist()
             },
         }
