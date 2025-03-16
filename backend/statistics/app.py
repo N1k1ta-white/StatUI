@@ -37,9 +37,8 @@ def analyze_dataset(name):
     json_data = request.get_json()
     file = get_file(name)
     df = read_csv(file)
-    return apply_methods(df, json_data)
+    return { "analysis": apply_methods(df, json_data), "descriptive": getDescriptiveStatistics(df) }
     
-
 @app.route("/descriptive", methods=["POST", "OPTIONS"])
 def descriptiveStatistics():
     file: FileStorage = request.files["file"]

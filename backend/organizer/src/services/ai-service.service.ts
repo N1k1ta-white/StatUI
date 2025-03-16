@@ -12,6 +12,33 @@ export class AiSuggestionService {
         private readonly fileService: FileService
     ) {}
 
+    private readonly suggestionFormat = {
+        "type": "json_schema",
+        "json_schema": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "method": { 
+                        "type": "string", 
+                        "description": "Name of the analysis method" 
+                    },
+                    "attributes_analysis": { 
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Attributes to be analyzed" 
+                    },
+                    "expected_results": { 
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Expected results from the analysis" 
+                    }
+                },
+                "required": ["method", "attributes_analysis", "expected_results"]
+            }
+        }
+    }
+
     @Get('suggest')
     async suggestAnalysisMethods(@Body() fileId: string, notes: string ): Promise<AnalysisMethod[]> {
         const extractedTypes = await this.fileService.extractTypes(fileId);
