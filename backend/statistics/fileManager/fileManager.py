@@ -1,18 +1,19 @@
 import os
 from flask import jsonify, request
+from dotenv import load_dotenv
+
+load_dotenv()
 
 UPLOAD_FOLDER = 'uploads'  # Define your upload directory
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# @app.route('/check-file/<filename>', methods=['GET'])
 def check_file(filename):
     file_path = os.path.join(UPLOAD_FOLDER, filename)
     exists = os.path.exists(file_path)
     return jsonify({'exists': exists})
 
-# @app.route('/upload-file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400

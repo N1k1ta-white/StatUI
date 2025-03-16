@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FileEntity } from 'src/entity/file.entity';
 import { TypeExtractorService } from 'src/type-extractor/type-extractor.service';
+import { createReadStream, existsSync, ReadStream } from 'fs';
 
 @Injectable()
 export class FileService {
@@ -12,8 +13,32 @@ export class FileService {
         private typeExtractorService: TypeExtractorService
     ) {}
 
-    private getPath(fileName: string) {
+    getPath(fileName: string) {
         return process.env.FILE_STORAGE_PATH + '/' + fileName;
+    }
+
+    async getFileStream(fileId: string): Promise<ReadStream}> {
+        const file = await this.fileRepository.findOne({ where: { id: fileId } });
+        if (!file) {
+            throw new BadRequestException('File not found');
+        }
+        
+        const filePath = this.getPath(file.fileName);
+        
+        try {
+            if (!existsSync(filePath)) {
+                throw new BadRequestException('File not found on disk');
+            }
+            
+            const stream = createReadStream(filePath);
+            return { 
+                stream, 
+                mimeType: file.mimeType, 
+                fileName: file.originalName 
+            };
+        } catch (error) {
+            throw new BadRequestException(`Failed to read file: ${error.message}`);
+        }
     }
 
     async saveFile(fileData: Express.Multer.File): Promise<{ file: FileEntity, originalName: string }> {
@@ -41,5 +66,14 @@ export class FileService {
         }  
 
         return file.typeOfAttributes;
+    }
+
+    async getName(fileId: string): Promise<string> {
+        const file = await this.fileRepository.findOne({ where: { id: fileId } });
+        if (!file) {
+            throw new BadRequestException('File not found');
+        }
+
+        return file.fileName;
     }
 }
