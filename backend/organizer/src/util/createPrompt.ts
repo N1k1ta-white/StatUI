@@ -47,7 +47,7 @@ export function createPrompt(notes: string, scheme: Record<string, ExtractedType
         Output Requirement:
         Return the results as a array with JSON objects with three keys:
         - "method": a recommended statistical method (as strings).
-        - "attribute_analysis": a specific attribute groups to analyze.
+        - "attribute_analysis": a specific attribute groups to analyze. If it is regression, first attribute is the dependent variable and the rest are independent variables.
         - "expected_results": description of insight and pattern we expect to discover from analysis with simple words understandable for everyone.
 
         Example Output:

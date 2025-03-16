@@ -57,5 +57,19 @@ def correlation():
         }
     }
 
+@app.route("/regression", methods=["POST"])
+def regression():
+    file: FileStorage = request.files["file"]
+    df : DataFrame = read_csv(file)
+    y = df['Social_Media_Hours']
+    X = df[['Age', 'Exercise_Hours', 'Sleep_Hours']]
+
+    return {
+        'type': 'regression',
+        'name': 'Linear Regression',
+        "data": regression.linear_regression(X, y),
+        "description": "The dimensionality of the data has been reduced to 1D using LSA. The regression line is visualized in this plot."
+    }
+
 if __name__ == "__main__":
     app.run()
