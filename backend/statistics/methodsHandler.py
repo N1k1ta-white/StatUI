@@ -52,7 +52,16 @@ def apply_methods(df: DataFrame, json_array):
         
         elif method in correlation_methods:
             # Use attribute_analysis directly, not method[attribute_analysis_field]
-            return correlation_methods[method](df[attribute_analysis])
+            correlation_matrix = correlation_methods[method](df[attribute_analysis])
+            return {
+                "type": "heatmap",
+                "name": "Pearson's Correlation Coefficient",
+                "description": "The correlation matrix is visualized in this plot.",
+                "data": {
+                    "correlationMatrix": correlation_matrix.values.tolist(),
+                    "values": correlation_matrix.columns.tolist()
+                }
+            }
         
         elif method in regression_methods:
             # Use attribute_analysis directly, not method[attribute_analysis_field]
