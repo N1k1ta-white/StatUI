@@ -50,7 +50,7 @@ export class StatisticService {
     async submitFileToStatistics(fileId: string) {
         try {
             if (!await this.checkFile(fileId)) {
-            return await this.loadFile(fileId);
+                return await this.loadFile(fileId);
             }
         } catch (error) {
             throw new BadRequestException('Failed to upload file to statistics service');

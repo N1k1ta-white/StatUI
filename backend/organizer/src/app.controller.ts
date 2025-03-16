@@ -26,7 +26,9 @@ export class AppController {
 
   @Get('statistic')
   async getStatistic(@Body() data: { fileId: string, methods: AnalysisMethod[] }) {
-    await this.statisticsService.checkFile(data.fileId);
+    if (!await this.statisticsService.checkFile(data.fileId)) {
+      await this.statisticsService.loadFile(data.fileId);
+    }
     return this.statisticsService.sendAnalysisRequest(data.fileId, data.methods);
   }
 

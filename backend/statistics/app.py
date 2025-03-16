@@ -33,13 +33,11 @@ def uploadFile():
     return upload_file(file)
 
 @app.route("/analyze/<name>", methods=["POST"])
-def analyze_dataset():
-    json = request.json
-    file = get_file(request.view_args['name'])
+def analyze_dataset(name):
+    json_data = request.get_json()
+    file = get_file(name)
     df = read_csv(file)
-    print(df)
-    return {"ok": "ok"}
-    return apply_methods(df, json)
+    return apply_methods(df, json_data)
     
 
 @app.route("/descriptive", methods=["POST", "OPTIONS"])

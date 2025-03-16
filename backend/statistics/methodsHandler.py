@@ -1,7 +1,6 @@
 import json
-import pandas as pd
+from pandas import DataFrame
 from correlation.correlation import Correlation
-from werkzeug.datastructures import FileStorage
 from regression.regression import Regression
 
 correlation = Correlation()
@@ -33,32 +32,34 @@ expected_results_field = 2
 def parse_analysis_method(item):
     method = item["method"]
     attribute_analysis = item["attribute_analysis"]
-    expected_results = item["expected_results"]
+    expected_results = item.get("expected_results", None)
     return (method, attribute_analysis, expected_results)
 
 def get_analysis_methods(json_array):
     analysis_methods = []
-    data = json.loads(json_array)
-    for el_json in data:
+    for el_json in json_array:
         analysis_methods.append(parse_analysis_method(el_json))
     return analysis_methods
 
-def apply_methods(file : FileStorage, json_array):
+def apply_methods(df: DataFrame, json_array):
+    print(json_array)
     methods = get_analysis_methods(json_array)
-    df = pd.read_csv(file)
 
-    for method in methods:
-        if method[method_field] in clustering:
+    for (method, attribute_analysis, expected_results) in methods:
+        if method in clustering:
            print("Clustering")
            pass
         
-        elif method[method_field] in correlation_methods:
-            return correlation_methods[method[method_field]](methods[attribute_analysis_field])
+        elif method in correlation_methods:
+            # Use attribute_analysis directly, not method[attribute_analysis_field]
+            return correlation_methods[method](df[attribute_analysis])
         
-        elif method[method_field] in regression:
-            y = df[method[attribute_analysis_field].first()]
-            X = df[method[attribute_analysis_field].drop(method[attribute_analysis_field].first())]
-            num_dimensions = len(method[attribute_analysis_field]) - 1
-            return regression_methods[method[method_field]](X, y, num_dimensions)
+        elif method in regression_methods:
+            # Use attribute_analysis directly, not method[attribute_analysis_field]
+            y = df[attribute_analysis[0]]
+            numeric_cols = [col for col in attribute_analysis[1:] if df[col].dtype.kind in 'ifc']
+            X = df[numeric_cols]
+            num_dimensions = len(attribute_analysis) - 1
+            return regression_methods[method](X, y, num_dimensions)
         else:
-            return "Method not found"
+            return {"error": "Method not found"}
