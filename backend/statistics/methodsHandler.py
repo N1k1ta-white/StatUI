@@ -8,11 +8,8 @@ correlation = Correlation()
 regression = Regression()
 clustering = Clustering()
 
-clustering = {
-    "K-means Clustering": clustering.kmeans, 
-    "Hierarchical Clustering": clustering.hierarchical,
-    "DBSCAN": clustering.dbscan,
-    "Gaussian Mixture Model": clustering.gaussian_mixture_model
+clustering_methods = {
+    "K-means Clustering": clustering.kmeans
 }
 
 correlation_methods = {
@@ -50,15 +47,21 @@ def get_analysis_methods(json_array):
 
 def apply_methods(df: DataFrame, json_array):
     methods = get_analysis_methods(json_array)
+    res = []
 
     for (method, attribute_analysis, expected_results) in methods:
-        if method in clustering:
-            return clustering[method](df[attribute_analysis])
+        if method in clustering_methods:
+            res.append({
+                "type": "cluster",
+                "name": method,
+                "description": "The data has been clustered using the K-means algorithm. The clusters are visualized in this plot.",
+                "data": clustering_methods[method](df)
+            })
         
         elif method in correlation_methods:
             # Use attribute_analysis directly, not method[attribute_analysis_field]
             correlation_matrix = correlation_methods[method](df[attribute_analysis])
-            return {
+            res.append({
                 "type": "heatmap",
                 "name": "Pearson's Correlation Coefficient",
                 "description": "The correlation matrix is visualized in this plot.",
@@ -66,20 +69,21 @@ def apply_methods(df: DataFrame, json_array):
                     "correlationMatrix": correlation_matrix.values.tolist(),
                     "values": correlation_matrix.columns.tolist()
                 }
-            }
+            })
         
         elif method in regression_methods:
             # Use attribute_analysis directly, not method[attribute_analysis_field]
-            df.dropna(inplace=True)
             y = df[attribute_analysis[0]]
             numeric_cols = [col for col in attribute_analysis[1:] if df[col].dtype.kind in 'ifc']
             X = df[numeric_cols]
             num_dimensions = len(attribute_analysis) - 1
-            return {
+            res.append({
                 'type': 'regression',
                 'name': 'Linear Regression',
                 "data": regression_methods[method](X, y, num_dimensions),
                 "description": "The dimensionality of the data has been reduced to 1D using LSA. The regression line is visualized in this plot."
-            }
+            })
         else:
             return {"error": "Method not found"}
+        
+    return res

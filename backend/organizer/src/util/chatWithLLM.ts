@@ -13,7 +13,7 @@ export async function chatWithLLM(message: string, structure: any) {
     model: "meta-llama-3.1-8b-instruct", // e.g., "mistral", "llama3"
     messages: [{ role: "system", content: "You are a helpful statistic and data science assistant." }, 
                { role: "user", content: message }],
-    max_tokens: 200,
+    max_tokens: 1000,
   };
 
   if (structure) {

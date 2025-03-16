@@ -37,9 +37,10 @@ def uploadFile():
 def analyze_dataset(name):
     json_data = request.get_json()
     file = get_file(name)
-    print(name)
     df = read_csv(file)
-    return { "analysis": apply_methods(df, json_data) }
+    df.dropna(inplace=True)
+    print(df)
+    return apply_methods(df, json_data)
     
 @app.route("/descriptive/<name>", methods=["GET"])
 def descriptiveStatistics(name):
@@ -61,18 +62,6 @@ def graphics():
     df : DataFrame = read_csv(file)
     graphics = getGraphics(df)
     return graphics
-
-@app.route("/clustering", methods=["POST"])
-def createClusters():
-    file: FileStorage = request.files["file"]
-    df : DataFrame = read_csv(file)
-    clusters = clustering.kmeans(df)
-    return {
-        "data": clusters,
-        "type": "cluster",
-        "name": "Plot of the clusters",
-        "description": "The dimensionality of the data has been reduced to 2D using PCA. The clusters are visualized in this plot."
-    }
 
 if __name__ == "__main__":
     app.run()

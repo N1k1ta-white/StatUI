@@ -40,10 +40,7 @@ export function createPrompt(notes: string, scheme: Record<string, ExtractedType
             Clustering & Grouping:
 
             Use K-means Clustering for segmenting data into distinct groups.
-            Use Hierarchical Clustering for discovering nested group structures.
-            Use DBSCAN for identifying clusters of varying density and detecting outliers.
-            Use Gaussian Mixture Models for probabilistic clustering.
-
+=
         Output Requirement:
         Return the results as a array with JSON objects with three keys:
         - "method": a recommended statistical method (as strings).

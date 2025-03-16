@@ -29,7 +29,7 @@ const StatisticsTable = ({data} : Props) => {
     }, [data]);
 
     return (
-        <div className="max-w-screen-xl overflow-auto">
+        <div className="max-w-[900px] overflow-auto">
             <table className=" border-collapse text-sm">
                 <thead>
                     <tr className="border-b-2">

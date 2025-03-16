@@ -25,7 +25,6 @@ export class AiSuggestionService {
         const extractedTypes = await this.fileService.extractTypes(fileId);
         const notes = await this.fileService.getNotes(fileId);
         const prompt = createPrompt(notes, extractedTypes);
-        console.log('Prompt:', prompt);
 
         let methods: AnalysisMethod[] = [];
         const maxAttempts = 3;
@@ -46,7 +45,9 @@ export class AiSuggestionService {
             }
         }
 
-        this.statisticService.submitFileToStatistics(fileId);
+        await this.statisticService.submitFileToStatistics(fileId);
+        console.log('Methods:', methods);
+
         return await this.statisticService.sendAnalysisRequest(fileId, methods);
     }
 }

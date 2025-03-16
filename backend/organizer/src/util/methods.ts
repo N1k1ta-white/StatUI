@@ -1,6 +1,5 @@
 export const statisticMethods = {
-    clustering: ["K-means Clustering", "Hierarchical Clustering", "DBSCAN", 
-        "Gaussian Mixture Model"],
+    clustering: ["K-means Clustering"],
     correlation: ["Pearson's Correlation Coefficient", "Spearman's Rank Correlation", "Kendall's Tau",
                    "Cross-Correlation", "Variance Inflation Factor"],
     regression: ["Linear Regression", "Multiple Regression", "Logistic Regression", 
