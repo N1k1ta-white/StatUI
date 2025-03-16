@@ -1,6 +1,6 @@
 import { ChartBase, ChartInterfaceClustering, ChartInterfaceHeatMap, ChartInterfaceRegression } from "@/type/chart";
 import { Heatmap, ScatterPlot } from "./charts/Chart";
-import { data } from "react-router-dom";
+import Hint from "@/components/Hint.tsx";
 
 interface Props {
     chart: ChartBase
@@ -12,8 +12,8 @@ function transformClusters({data}: ChartInterfaceClustering) {
         mode: 'markers'
     }));
 }
-interface Props {
-    function RealGraph({chart}: Props) {
+
+export default function DefinedChart({chart}: Props) {
     return (
         <>
             {
@@ -28,9 +28,14 @@ interface Props {
                                 title: heatmapData.name || "heatmap",
                             }
 
-                            return (<Heatmap mappedData={mappedData} metaData={chart}/>)
+                            return (
+                                <>
+                                    <Hint mappedData={mappedData} metaData={chart}/>
+                                    <Heatmap mappedData={mappedData} metaData={chart}/>
+                                </>
+                            )
                         }
-                        case "clustering": {
+                        case "cluster": {
                             const clusteringData = chart as ChartInterfaceClustering;
                             // const preProcessData : { x: number[]; y: number[]; mode: string }[] = Object.values(clusteringData).map((cluster: { x: number; y: number }[]) => ({
                             //     x: cluster.map((point: { x: number; y: number }) => point.x),
@@ -42,7 +47,12 @@ interface Props {
                                 title:clusteringData.name
                             }
 
-                            return (<ScatterPlot mappedData={mappedData} metaData={chart}/>)
+                            return (
+                                <>
+                                    <Hint mappedData={mappedData} metaData={chart}/>
+                                    <ScatterPlot mappedData={mappedData} metaData={chart}/>
+                                </>
+                            )
                         }
                         case "regression": {
                             const regressionData = chart as ChartInterfaceRegression;
@@ -63,7 +73,12 @@ interface Props {
                                 title: regressionData.name
                             };
 
-                            return (<ScatterPlot mappedData={mappedData} metaData={chart}/>)
+                            return (
+                                <>
+                                    <Hint mappedData={mappedData} metaData={chart}/>
+                                    <ScatterPlot mappedData={mappedData} metaData={chart}/>
+                                </>
+                            )
                         }
 
                         default: return <> </>

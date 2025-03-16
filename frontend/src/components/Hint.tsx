@@ -33,7 +33,7 @@ function Hint({mappedData, metaData}: Props) {
     const [answer, setAnswer] = useState<string | null>();
     useEffect(() => {
         const fetchAnswer = async () => {
-            // setAnswer(await chatWithLLM(generatePrompt({mappedData, metaData})))
+            //setAnswer(await chatWithLLM(generatePrompt({mappedData, metaData})))
             setAnswer(await chatWithLLM("Привет как дела"))
         }
         try {

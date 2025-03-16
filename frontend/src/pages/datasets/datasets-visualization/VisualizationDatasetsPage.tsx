@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import {ChartInterfaceClustering} from "@/type/chart.ts";
 import {useSelector} from "react-redux";
 import store, {RootState} from "@/store/store.ts";
-import {fetchUploadCluster} from "@/store/statisticsSlice.ts";
+import {fetchUploadCluster, fetchUploadCorrelation, fetchUploadRegression} from "@/store/statisticsSlice.ts";
 import Hint from "@/components/Hint.tsx";
+import DefinedChart from "@/components/DefinedChart.tsx";
 
 // function transformClusters({data}: ChartInterfaceClustering) {
 //     return Object.values(data).map(cluster => ({
@@ -18,7 +19,16 @@ import Hint from "@/components/Hint.tsx";
 function VisualizationDatasetsPage() {
     const charts = useSelector((state: RootState) => state.chartsData.statistics.charts);
     useEffect(() => {
-        store.dispatch(fetchUploadCluster())
+        const getCharts = async () => {
+            await store.dispatch(fetchUploadCluster())
+            await store.dispatch(fetchUploadRegression())
+            await store.dispatch(fetchUploadCorrelation())
+        }
+        try {
+            getCharts()
+        } catch (error) {
+            console.error((error as Error).message)
+        }
     }, []);
      return (
          <div>
@@ -26,19 +36,21 @@ function VisualizationDatasetsPage() {
              <DataTable/>
              <div className="relative w-[50%] h-24"><Hint/></div>
              {
-                 // charts.length > 0 && charts.map((chart, idx) => {
-                 //     <div className = "relative"><DefinedChart chart={chart} idx={idx} /> </div>
-                 // })
-
-
-                 // cluster &&
-                 // <ScatterPlot
-                 //     data={transformClusters(cluster as ChartInterfaceClustering)}
-                 //     xAxisLabel = "X Axis Label"
-                 //     yAxisLabel = "Y Axis Label"
-                 //     title="Scatter Plot Example"
-                 // />
+                 charts.length > 0 && charts.map((chart, idx) => (
+                     <div key={idx} className = "relative">
+                         <DefinedChart chart={chart} key={idx} />
+                     </div>
+                 ))
              }
+
+
+                 {/*cluster &&*/}
+                 {/*<ScatterPlot*/}
+                 {/*    data={transformClusters(cluster as ChartInterfaceClustering)}*/}
+                 {/*    xAxisLabel = "X Axis Label"*/}
+                 {/*    yAxisLabel = "Y Axis Label"*/}
+                 {/*    title="Scatter Plot Example"*/}
+                 {/*/>*/}
             {/*<Heatmap z={[[1, 20, 30], [20, 1, 60], [30, 60, 1]]} values_x={["A", "B", "C"]} values_y={["A", "B", "C"]} title="Heatmap Example" />*/}
             {/*/!*<StandardHistogramPlot x={[1, 2, 3, 4]} name="Histogram" title="Histogram Example" />*!/*/}
             {/*<StandardPiePlot values={[19, 26, 55]} labels={["A", "B", "C"]} title="Pie Chart Example" />*/}
