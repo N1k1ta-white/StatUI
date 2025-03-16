@@ -1,5 +1,5 @@
-import { ChartBase, ChartInterfaceClustering, ChartInterfaceHeatMap, ChartInterfaceRegression } from "@/type/chart";
-import { Heatmap, ScatterPlot } from "./charts/Chart";
+import { BarBase, ChartBase, ChartInterfaceBar, ChartInterfaceClustering, ChartInterfaceHeatMap, ChartInterfacePie, ChartInterfaceRegression, FunnelPlotChartInterface, ViolinHistogramChartInterface } from "@/type/chart";
+import { FunnelPlot, GroupedBarPlot, Heatmap, ScatterPlot, StackedBarPlot, StandardBarPlot, StandardPiePlot, ViolinPlot } from "./charts/Chart";
 import Hint from "@/components/Hint.tsx";
 
 interface Props {
@@ -81,6 +81,74 @@ export default function DefinedChart({chart}: Props) {
                                 </>
                             )
                         }
+                        case "pie": {
+                            const pieData = chart as ChartInterfacePie;
+                            return (
+                                <>
+                                    <Hint mappedData={pieData} metaData={chart}/>
+                                    <StandardPiePlot mappedData={pieData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        case "stackbar": {
+                            const barData = chart as ChartInterfaceBar;
+                            return (
+                                <>
+                                    <Hint mappedData={barData} metaData={chart}/>
+                                    <StackedBarPlot mappedData={barData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        case "groupbar": {
+                            const barData = chart as ChartInterfaceBar;
+                            return (
+                                <>
+                                    <Hint mappedData={barData} metaData={chart}/>
+                                    <GroupedBarPlot mappedData={barData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        case "bar": {
+                            const barData = chart as BarBase;
+                            return (
+                                <>
+                                    <Hint mappedData={barData} metaData={chart}/>
+                                    <StandardBarPlot mappedData={barData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        case "violin":{
+                            const violinData = chart as ViolinHistogramChartInterface;
+                            return (
+                                <>
+                                    <Hint mappedData={violinData} metaData={chart}/>
+                                    <ViolinPlot mappedData={violinData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        case "histogram":{
+                            const histoData = chart as ViolinHistogramChartInterface;
+                            return (
+                                <>
+                                    <Hint mappedData={histoData} metaData={chart}/>
+                                    <ViolinPlot mappedData={histoData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        case "funnel":{
+                            const funelData = chart as FunnelPlotChartInterface;
+                            return (
+                                <>
+                                    <Hint mappedData={funelData} metaData={chart}/>
+                                    <FunnelPlot mappedData={funelData} metaData={chart}/>
+                                </>
+                            )
+                        }
+                        
+
+
+
+                        
 
                         default: return <> </>
                     }
