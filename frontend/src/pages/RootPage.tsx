@@ -13,11 +13,12 @@ export default function RootPage() {
         <div className="flex flex-col h-screen">
             {/* Fixed Header */}
             <header className="w-full">
-                <div className="w-full flex items-center justify-between bg-[rgb(244,244,244)] px-12">
+                <div className="w-full flex items-center justify-between bg-[rgb(194,214,255)] px-12">
                     <h1 className="text-2xl font-bold pt-3 pb-3 text-center cursor-pointer"
-                        onClick={() => navigate("/")}><i>STAT UI</i></h1>
+                        onClick={() => navigate("/")}>STAT UI</h1>
                     <div className="flex items-center gap-4">
-                        <NavLink to="/login">Login</NavLink>
+                        {/*<NavLink to="/login">Login</NavLink>*/}
+
                     </div>
                 </div>
                 

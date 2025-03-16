@@ -22,7 +22,7 @@ function HomePage() {
                     <p className="text-lg mb-10 text-center max-w-2xl">
                         Explore advanced data visualizations and statistical insights with ease. We bring the power of data science to your fingertips.
                     </p>
-                    <p className="text-lg mb-6 text-center md:text-left">
+                    <p className="text-lg mb-6 text-center md:text-center">
                         Dive into the world of data visualization. Analyze trends, patterns, and relationships in your data effortlessly.
                     </p>
                     <Button
