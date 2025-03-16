@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Get, HttpCode, Injectable } from '@nestjs/common';
+import { BadRequestException, Get, HttpCode, Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { FileService } from './file.service';
 
@@ -19,12 +19,9 @@ export class StatisticService {
 
     async checkFile(fileId: string) {
         const name = await this.fileService.getName(fileId);
-        console.log('Checking file in statistics service');
 
         const response = await lastValueFrom(this.httpService.get(`${this.url}/check-file/${name}`));
         const result = response.data.exists ?? false;
-
-        console.log('File exists in statistics service:', result);
 
         return result;
     }
@@ -32,9 +29,6 @@ export class StatisticService {
     async loadFile(fileId: string) {
         const fileStream = await this.fileService.getFileStream(fileId);
         const name = await this.fileService.getName(fileId);
-
-        console.log('Uploading file to statistics service');
-        console.log(name);
         
         // Convert the ReadStream to a Buffer and then create a Blob
         const chunks: Buffer[] = [];
@@ -57,4 +51,14 @@ export class StatisticService {
         );
     }
 
+    async submitFileToStatistics(fileId: string) {
+        try {
+            if (!await this.checkFile(fileId)) {
+            return await this.loadFile(fileId);
+            }
+        } catch (error) {
+            throw new BadRequestException('Failed to upload file to statistics service');
+        }
+    }
+    
 }

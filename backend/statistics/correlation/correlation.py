@@ -9,15 +9,23 @@ class Correlation:
         vif_data = DataFrame()
         vif_data["feature"] = numeric_data.columns
         vif_data["VIF"] = [variance_inflation_factor(numeric_data.values, i) for i in range(numeric_data.shape[1])]
+        return vif_data
+    
     def pearson_correlation_matrix(self, data):
         # Filter only numeric columns for correlation calculation
         numeric_data = data.select_dtypes(include=['number'])
+        return numeric_data.corr(method='pearson')
+
     def spearman_correlation_matrix(self, data):
         # Filter only numeric columns for correlation calculation
         numeric_data = data.select_dtypes(include=['number'])
+        return numeric_data.corr(method='pearson')
+
     def kendall_tau_matrix(self, data):
         # Filter only numeric columns for correlation calculation
         numeric_data = data.select_dtypes(include=['number'])
+        return numeric_data.corr(method='kendall')
+    
     def cross_correlation_matrix(self, data):
         # Filter only numeric columns for correlation calculation
         numeric_data = data.select_dtypes(include=['number'])
