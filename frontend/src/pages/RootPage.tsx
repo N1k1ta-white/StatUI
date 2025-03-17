@@ -28,7 +28,7 @@ export default function RootPage() {
             <main className="h-fit">
                 <Outlet/>
                 <Loader/>
-                <ErrorToast/>
+                {/*<ErrorToast/>*/}
             </main>
         </div>
     )

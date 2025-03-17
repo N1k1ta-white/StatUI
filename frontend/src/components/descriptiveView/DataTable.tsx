@@ -30,7 +30,7 @@ const StatisticsTable = ({data} : Props) => {
 
     return (
         <div className="max-w-[900px] overflow-auto">
-            <table className=" border-collapse text-sm">
+            <table className="min-w-[900px] border-collapse text-sm">
                 <thead>
                     <tr className="border-b-2">
                         <th className="py-2 px-4 text-left font-medium text-gray-600">Statistic</th>
@@ -63,6 +63,7 @@ const StatisticsTable = ({data} : Props) => {
 
 
 const DataTable: React.FC = () => {
+    const fileName = useSelector((state: RootState) => state.chartsData.statistics.fileName);
     const descriptiveData = useSelector((state: RootState) => state.chartsData.statistics.descriptiveStatistics);
 
     return (
@@ -72,7 +73,7 @@ const DataTable: React.FC = () => {
                 <Card className="w-fit p-4 mb-6 shadow-lg rounded-lg border border-gray-200 bg-white">
                     <div className="flex justify-start gap-8 items-center">
                         <h2 className="text-lg font-semibold text-gray-700">Statistical Overview</h2>
-                        <span>example.csv</span>
+                        <span>{fileName}</span>
                     </div>
                     <StatisticsTable data={descriptiveData}/>
                 </Card>
